@@ -7,6 +7,12 @@ public class ParameterVariables {
 	ArrayList<String> parameterValues;
 	VariableValidation validationrules;
 	
+	//Boolean Variables that store the regular expression rules
+	boolean IsEmailID;
+	boolean IsNumeric;
+	boolean IsAlphaNumeric;
+	boolean IsCharacter;
+	
 	ParameterVariables()
 	{
 		validationrules = new VariableValidation();
