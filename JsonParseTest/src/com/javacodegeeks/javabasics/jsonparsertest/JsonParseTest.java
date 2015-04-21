@@ -112,7 +112,7 @@ public class JsonParseTest {
 					
 				
 				//Read page variables and their values
-				
+		
 				
 				//Read the variable names
 				for ( Object key : parameters.keySet() ) { 
@@ -181,19 +181,19 @@ public class JsonParseTest {
 					//Any variable if violates the regex even a single time, then would not be checked further
 					//In case an average case or standard deviation needs to be considered then all possible values need to be stored.
 					
-					if(temp_instance.IsAlphaNumeric)
+					if(IsAlphanumeric)
 					{
 						temp_instance.IsAlphaNumeric = IsAlphanumeric;
 					}
-					if(temp_instance.IsNumeric)
+					if(IsNumeric)
 					{
 						temp_instance.IsNumeric = IsNumeric;
 					}
-					if(temp_instance.IsEmailID)
+					if(IsEmailid)
 					{
 						temp_instance.IsEmailID = IsEmailid;
 					}
-					if(temp_instance.IsCharacter)
+					if(IsAlphabet)
 					{
 						temp_instance.IsCharacter = IsAlphabet;
 					}
