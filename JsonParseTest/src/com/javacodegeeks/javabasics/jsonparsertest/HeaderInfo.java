@@ -3,7 +3,7 @@ import com.javacodegeeks.javabasics.jsonparsertest.VariableValidation;
 
 import java.util.ArrayList;
 
-public class ParameterData {
+public class HeaderInfo {
 	
 		/* Class Contains generic information that needs to be stored */
 		
@@ -15,7 +15,7 @@ public class ParameterData {
 		public int totalrequests;
 		
 		//Default Constructor
-		ParameterData ()
+		HeaderInfo ()
 		{
 			validation_variable = new VariableValidation();
 			total_number_of_variables  = 0;
@@ -24,7 +24,7 @@ public class ParameterData {
 		}
 		
 		//Parameterized Constructor
-		ParameterData(int contentlengthmax,int contentlengthaverage,int contentlengthmin,int totalnumberofvariables,String ua,String accessmethod){
+		HeaderInfo(int contentlengthmax,int contentlengthaverage,int contentlengthmin,int totalnumberofvariables,String ua,String accessmethod){
 			
 			total_number_of_variables = totalnumberofvariables;
 			user_agent = ua;	

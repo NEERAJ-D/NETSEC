@@ -3,20 +3,23 @@ package com.javacodegeeks.javabasics.jsonparsertest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.javacodegeeks.javabasics.jsonparsertest.ParameterVariables;
-import com.javacodegeeks.javabasics.jsonparsertest.ParameterData;
+import com.javacodegeeks.javabasics.jsonparsertest.HeaderInfo;
 import com.javacodegeeks.javabasics.jsonparsertest.VariableValidation;
 public class Payload {
 
-	public ParameterData genericinfo;
+	//Object that stores the Header Information
+	public HeaderInfo header_data;
+	
+	//Map that stores the Parameter Variable Information
 	public HashMap<String,ParameterVariables> variables_data = null; 
 	
+	//Default Constructor 
 	Payload()
 	{
+		//Initialize the Map of Parameters
 		variables_data = new HashMap<String ,ParameterVariables >();
-		genericinfo = new ParameterData();
+		//Create a new Header data object
+		header_data = new HeaderInfo();
 	}
-	Payload(ParameterData pdata)
-	{
-		genericinfo = pdata;
-	}
+	
 }

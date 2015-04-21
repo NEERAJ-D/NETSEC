@@ -9,7 +9,7 @@ public class VariableValidation {
 		// TODO Auto-generated constructor stub
 		max = 0;
 		average = 0;
-		min = 0;
+		min = Integer.MAX_VALUE;
 		dataType = "";
 	}
 	public VariableValidation(int nmax,int naverage,int nmin,String dttype) {
