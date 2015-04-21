@@ -1,11 +1,11 @@
-package com.javacodegeeks.javabasics.jsonparsertest;
+package com.netsec.firewall;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import org.json.simple.JSONObject;
 
-import com.javacodegeeks.javabasics.jsonparsertest.*;
+import com.netsec.firewall.*;
 public class DataManager {
 
 	
@@ -54,7 +54,9 @@ public class DataManager {
 	  //Referer URL --> Payload Map
 	   HashMap<String, Payload> refererurlmap;
 	   
-	   
+	   //Current Header and Current Parameter
+	   JSONObject current_header;
+	   JSONObject current_parameters;
 	   
 	   //Functions
 	   
@@ -67,19 +69,19 @@ public class DataManager {
    
 	   //Validate the payload
 	   //Input :: JSONObject Header , JSONObject Parameter
-	   public void ValidatePayload(JSONObject header,JSONObject parameters)
+	   public void ValidatePayload()
 	   {
 		   	// Extract method type
-		   	String method =  ReadFromJSONObject(header,METHOD);
+		   	String method =  ReadFromJSONObject(current_header,METHOD);
 			
 			//Extract user-agent
-			String user_agent = ReadFromJSONObject(header,USERAGENT); 
+			String user_agent = ReadFromJSONObject(current_header,USERAGENT); 
 			
 			//Extract content-length
-			String content_length = ReadFromJSONObject(header,CONTENTLENGTH); 
+			String content_length = ReadFromJSONObject(current_header,CONTENTLENGTH); 
 			
 			//Extract referer
-			String referer =  ReadFromJSONObject(header,REFERER);
+			String referer =  ReadFromJSONObject(current_header,REFERER);
 			
 			//#DEBUG print statements
 			System.out.println("Method:: " + method);
@@ -129,11 +131,11 @@ public class DataManager {
 					temporary.header_data.totalrequests++;
 			
 					//Set the total number of variables in the current request
-					temporary.header_data.total_number_of_variables = parameters.size();
+					temporary.header_data.total_number_of_variables = current_parameters.size();
 			
 					//Validate the parameters
-					if(parameters.size()!=0)
-						ValidateParameters(parameters,temporary);
+					if(current_parameters.size()!=0)
+						ValidateParameters(current_parameters,temporary);
 					
 					//Update the record back in the Map
 					refererurlmap.put(referer, temporary);

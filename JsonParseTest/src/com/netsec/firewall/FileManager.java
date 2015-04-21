@@ -1,4 +1,4 @@
-package com.javacodegeeks.javabasics.jsonparsertest;
+package com.netsec.firewall;
 
 import java.io.FileReader;
 import java.io.FileNotFoundException;
@@ -23,6 +23,22 @@ public class FileManager {
 	//Header Section
 	private static final String HEADER = "header";
 	
+	//Output File Constants
+	private static final String MINIMUM_TAG  = "min";
+	private static final String MAXIMUM_TAG  = "max";
+	private static final String AVERAGE_TAG  = "average";
+	
+	//Header Section
+	private static final String TOTAL_PARAMETERS_TAG  ="totalparameters";
+	
+	//Parameter Section
+	private static final String ISEMAILID_TAG  ="is_email_id";
+	private static final String ISNUMERIC_TAG  ="is_numeric";
+	private static final String ISALPHABET_TAG  ="is_alphabet";
+	private static final String ISALPHANUMERIC_TAG  ="is_alphanumeric";
+	
+	
+	
 	private static FileReader file_learning_input;
 	FileManager ()
 	{
@@ -38,25 +54,27 @@ public class FileManager {
 	        	
 	        	//Single Request object
 	            JSONObject request = (JSONObject) singlerequest.next();
-	            JSONObject header=new JSONObject();
-	            JSONObject parameters=new JSONObject();
-	            ParseRequest(request,header,parameters);
-	            DataManager.getInstance().ValidatePayload(header, parameters);
-				
-	            //Separator print #DEBUG
+	            //Parse a single request           
+	            ParseRequest(request);
+	            //Validate the Payload
+	            DataManager.getInstance().ValidatePayload();
+				//Separator print #DEBUG
 	        	System.out.println("-------------------");
 				}
 	}
-	private static void ParseRequest(JSONObject request,JSONObject header,JSONObject parameters)
+	private static void ParseRequest(JSONObject request)
 	{
 		try
 		{
-        
+		
+			DataManager.getInstance().current_header = new JSONObject();
+			DataManager.getInstance().current_parameters = new JSONObject();
+			
 	        //Header of request
-	        header = (JSONObject) request.get(HEADER);			
+			DataManager.getInstance().current_header = (JSONObject) request.get(HEADER);			
 	        
 	        //Parameter section of request
-	        parameters = (JSONObject) request.get(PARAMETERS);
+			DataManager.getInstance().current_parameters = (JSONObject) request.get(PARAMETERS);
 			}
 			catch (NullPointerException ex) {
 				ex.printStackTrace();
@@ -106,12 +124,10 @@ public class FileManager {
 	}
 	private static void WriteHeader(JSONObject ObjHeaderInfo,HeaderInfo header_info)
 	{
-       	//JSONObject validheader = new JSONObject();
-		ObjHeaderInfo.put("max", header_info.validation_variable.max);
-		ObjHeaderInfo.put("min", header_info.validation_variable.min);
-		ObjHeaderInfo.put("average", header_info.validation_variable.average);
-    	//HeaderInfo.put("datatype", temp.genericinfo.validation_variable.dataType);
-		ObjHeaderInfo.put("totalparameters", header_info.totalrequests);
+       	ObjHeaderInfo.put(MAXIMUM_TAG, header_info.validation_variable.max);
+		ObjHeaderInfo.put(MINIMUM_TAG, header_info.validation_variable.min);
+		ObjHeaderInfo.put(AVERAGE_TAG, header_info.validation_variable.average);
+		ObjHeaderInfo.put(TOTAL_PARAMETERS_TAG, header_info.totalrequests);
 	}
 	
 	
@@ -131,17 +147,19 @@ public class FileManager {
     		JSONObject ParameterData = new JSONObject();
     		
     		//Iterate all the parameters
-    		ParameterData.put("max", parameter_value.validationrules.max );
-    		ParameterData.put("min", parameter_value.validationrules.min);
-    		ParameterData.put("average",parameter_value.validationrules.average );
+    		ParameterData.put(MAXIMUM_TAG, parameter_value.validationrules.max );
+    		ParameterData.put(MINIMUM_TAG, parameter_value.validationrules.min);
+    		ParameterData.put(AVERAGE_TAG,parameter_value.validationrules.average );
         	
     		//Write boolean values
-    		ParameterData.put("is_email_id", parameter_value.IsEmailID );
-    		ParameterData.put("is_numeric", parameter_value.IsNumeric );
-    		ParameterData.put("is_alphanumeric", parameter_value.IsEmailID );
-    		ParameterData.put("is_alphabet", parameter_value.IsCharacter );
+    		ParameterData.put(ISEMAILID_TAG, parameter_value.IsEmailID );
+    		ParameterData.put(ISNUMERIC_TAG, parameter_value.IsNumeric );
+    		ParameterData.put(ISALPHANUMERIC_TAG, parameter_value.IsEmailID );
+    		ParameterData.put(ISALPHABET_TAG, parameter_value.IsCharacter );
         	
         	ParameterInfo.put(parameter_name,ParameterData );
+        	
+        	//Add parameter to the parameter array
         	ParameterArray.add(ParameterInfo);
     	}
     	

@@ -1,4 +1,4 @@
-package com.javacodegeeks.javabasics.jsonparsertest;
+package com.netsec.firewall;
 
 import java.util.ArrayList;
 
@@ -15,6 +15,10 @@ public class ParameterVariables {
 	
 	ParameterVariables()
 	{
+		IsEmailID = true;
+		IsNumeric = true;
+		IsAlphaNumeric = true;
+		IsCharacter = true;
 		validationrules = new VariableValidation();
 		parameterValues = new ArrayList<String>();
 	}

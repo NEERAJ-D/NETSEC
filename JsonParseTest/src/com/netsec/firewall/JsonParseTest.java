@@ -1,4 +1,4 @@
-package com.javacodegeeks.javabasics.jsonparsertest;
+package com.netsec.firewall;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,7 +14,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.javacodegeeks.javabasics.jsonparsertest.*;
+import com.netsec.firewall.*;
 public class JsonParseTest {
 
 	private static final String FILEPATH = "D:\\Study\\Network Security\\logfile.json";

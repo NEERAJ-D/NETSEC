@@ -1,4 +1,4 @@
-package com.javacodegeeks.javabasics.jsonparsertest;
+package com.netsec.firewall;
 
 public class VariableValidation {
 	public int max;

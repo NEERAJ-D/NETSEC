@@ -1,5 +1,5 @@
-package com.javacodegeeks.javabasics.jsonparsertest;
-import com.javacodegeeks.javabasics.jsonparsertest.VariableValidation;
+package com.netsec.firewall;
+import com.netsec.firewall.VariableValidation;
 
 import java.util.ArrayList;
 

@@ -1,10 +1,11 @@
-package com.javacodegeeks.javabasics.jsonparsertest;
+package com.netsec.firewall;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.javacodegeeks.javabasics.jsonparsertest.ParameterVariables;
-import com.javacodegeeks.javabasics.jsonparsertest.HeaderInfo;
-import com.javacodegeeks.javabasics.jsonparsertest.VariableValidation;
+
+import com.netsec.firewall.HeaderInfo;
+import com.netsec.firewall.ParameterVariables;
+import com.netsec.firewall.VariableValidation;
 public class Payload {
 
 	//Object that stores the Header Information
