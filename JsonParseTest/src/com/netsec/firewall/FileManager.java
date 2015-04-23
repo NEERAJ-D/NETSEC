@@ -30,6 +30,7 @@ public class FileManager {
 	
 	//Header Section
 	private static final String TOTAL_PARAMETERS_TAG  ="totalparameters";
+	private static final String METHOD_TAG = "METHOD";
 	
 	//Parameter Section
 	private static final String ISEMAILID_TAG  ="is_email_id";
@@ -61,7 +62,53 @@ public class FileManager {
 				//Separator print #DEBUG
 	        	System.out.println("-------------------");
 				}
+		
+
+    	
+		
+		
+		
+		
+		
 	}
+	
+	//Responsible for updating the standard deviation
+	private static void PostProcessing()
+	{
+		//Processing for standard deviation
+		
+		DataManager.getInstance().refererurlmap.entrySet().iterator();
+		
+		//Iterate the map for each URL each parameter
+		Iterator<Map.Entry <String, Payload>> RefererPayload = DataManager.getInstance().refererurlmap.entrySet().iterator();
+    	
+    	while(RefererPayload.hasNext())
+    	{
+    		Map.Entry <String, Payload> single_payload = RefererPayload.next();
+    		
+    		Iterator<Map.Entry <String,ParameterVariables>> mapsinglepageparameter =  single_payload.getValue().variables_data.entrySet().iterator();
+    		
+    		while(mapsinglepageparameter.hasNext())
+    		{
+    			Map.Entry <String,ParameterVariables> singlepage_paramter_value = mapsinglepageparameter.next();
+  			
+    			
+    			for( Integer singlelement : singlepage_paramter_value.getValue().listofcontentlengths)
+    			{
+    				//Calculate mean
+    				
+    				//Calculate abs(individual - mean)
+    				
+    				//Divide by the N
+    			}
+    			
+    			
+    		}
+    	}
+    	
+    	//Find the maximum number of parameters all pages
+	}
+	
 	private static void ParseRequest(JSONObject request)
 	{
 		try
@@ -128,6 +175,7 @@ public class FileManager {
 		ObjHeaderInfo.put(MINIMUM_TAG, header_info.validation_variable.min);
 		ObjHeaderInfo.put(AVERAGE_TAG, header_info.validation_variable.average);
 		ObjHeaderInfo.put(TOTAL_PARAMETERS_TAG, header_info.totalrequests);
+		ObjHeaderInfo.put(METHOD_TAG, header_info.method);
 	}
 	
 	
@@ -165,7 +213,7 @@ public class FileManager {
     	
 	}
 	
-	public static void WriteOutputFile()
+	public static void WriteOutputFile(String OUTPUTFILEPATH)
 	{
 		try
 		{
@@ -206,7 +254,7 @@ public class FileManager {
         outputrequests.put(REQUESTS,jsonArrayOfRequest );
         	        
         /* File writing Logic */
-        FileWriter file = new FileWriter("D:\\Study\\Network Security\\modelfile.json");
+        FileWriter file = new FileWriter(OUTPUTFILEPATH);
         file.write(outputrequests.toJSONString());  
         System.out.println("Successfully Copied JSON Object to File...");
         System.out.println("\nJSON Object: " + jsonParameterData);

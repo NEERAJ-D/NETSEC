@@ -14,6 +14,7 @@ public class DataManager {
 	private static final String regex_digit = "\\d+";
 	private static final String regex_alphanumeric = "[\\d\\a-zA-Z]+";
 	private static final String regex_alphabet = "[a-zA-Z]+";
+	private static final String regex_file = "\\Aimage\\\\(.)*"; //Only Image Files are acceptable
 	
 	//Constants for File reading 
 	private static final String REQUESTS = "requests";
@@ -48,9 +49,7 @@ public class DataManager {
 	      }
 	      return instance;
 	   }
-	   
-	   
-	   
+		   
 	  //Referer URL --> Payload Map
 	   HashMap<String, Payload> refererurlmap;
 	   
@@ -104,6 +103,8 @@ public class DataManager {
 						//Fetch the ParameterData for corresponding page
 						temporary = refererurlmap.get(referer);
 						
+						//Store the method that page uses
+						temporary.header_data.method = method;
 						
 						//Header Validation
 						//Check Maximum
@@ -173,9 +174,18 @@ public class DataManager {
 			 IsAlphabet =  (pattern_alphabet.matcher(variable_value).matches() ? true : false);
 			 return IsAlphabet;
 	   }
+	   
+	   public boolean IsFieldFile(String variable_value)
+	   {
+			 Pattern pattern_alphabet = Pattern.compile(regex_file);
+			 //Check if regex digit field
+			 boolean IsFile  ;//= need to extract IsAlphanumeric variable from stored;
+			 IsFile =  (pattern_alphabet.matcher(variable_value).matches() ? true : false);
+			 return IsFile;
+	   }
 	   private void ValidateParameters(JSONObject parameters,Payload temporary)
 	   {
-		   int variable_count = 0;
+		   
 		 //Read the variable names
 			for ( Object key : parameters.keySet() ) { 
 				 //System.out.println( key.toString() );
@@ -195,6 +205,8 @@ public class DataManager {
 				 
 				//Check if the field is alphabet
 				boolean IsAlphabet = IsFieldAlphabet(variable_value) ;
+				
+				boolean IsFile = IsFieldFile(variable_value);
 				 
 				 //Parameter variable temporary instance
 				 ParameterVariables temp_instance;
@@ -205,10 +217,40 @@ public class DataManager {
 				 else
 				 {
 					 temp_instance = new ParameterVariables();
+					 if(IsEmailid)
+						{
+							temp_instance.IsEmailID = IsEmailid;
+						}
+						else
+						{
+							if(IsNumeric)
+							{
+								temp_instance.IsNumeric = IsNumeric;
+							}
+							else
+							{
+								if(IsFile)
+								{
+									temp_instance.IsFile = IsFile;
+								}
+								else
+								{
+									if(IsAlphabet)
+									{
+										temp_instance.IsCharacter = IsAlphabet;
+									}
+									else if(IsAlphanumeric)
+									{
+										temp_instance.IsAlphaNumeric = IsAlphanumeric;
+									}
+								}
+							}
+						}
+					 
 				}
 				 
 				 //List of Valid values (can act as a white list)
-				 temp_instance.parameterValues.add(variable_value);
+				 //temp_instance.parameterValues.add(variable_value);
 				 
 				 int contentlength = 0;
 				 if(IsNumeric)
@@ -236,13 +278,21 @@ public class DataManager {
 							temp_instance.validationrules.min = contentlength;
 				 }
 				
+				//Add the content length to the list for calculation of standard deviation
+				 temp_instance.listofcontentlengths.add(contentlength);
+				 
 				//Update the average
-				temp_instance.validationrules.average = (temp_instance.validationrules.average * variable_count + contentlength)/(variable_count + 1);
-				variable_count++;
+				temp_instance.validationrules.average = (temp_instance.validationrules.average * temp_instance.numberofinstances + contentlength)/(temp_instance.numberofinstances + 1);
+				temp_instance.numberofinstances++;
+
 				//Below statements ensure that variable flags indicate the type of regex they satisfy
 				//Any variable if violates the regex even a single time, then would not be checked further
 				//In case an average case or standard deviation needs to be considered then all possible values need to be stored.
 				
+				
+				/*
+				 * NEED NOT ITERATIVELY PERFORM THIS CHECK AS LEARNING ALWAYS INVOLVES CORRRECT INPUT
+				 * UNCOMMENT IF LEARNING DECIDE TO TRAIN ON INCORRECT INPUT ALSO
 				//temp_instance.IsAlphaNumeric has been initialized to true, so first time value is true, and if true only then 
 				//check if next value is true, first time false appears do not check from next time
 				if(temp_instance.IsEmailID)
@@ -268,7 +318,7 @@ public class DataManager {
 						
 					}
 				}
-				
+				*/
 		
 				//File upload regular expressions to be written
 			
