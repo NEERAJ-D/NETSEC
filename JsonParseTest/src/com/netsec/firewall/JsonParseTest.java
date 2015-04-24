@@ -1,22 +1,8 @@
 package com.netsec.firewall;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.regex.Pattern;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import com.netsec.firewall.*;
 public class JsonParseTest {
 
 	private static final String INPUTFILEPATH = "D:\\Study\\Network Security\\training.log";

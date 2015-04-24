@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import org.json.simple.JSONObject;
-
-import com.netsec.firewall.*;
 public class DataManager {
 
 	

@@ -1,15 +1,8 @@
 package com.netsec.firewall;
 
-import java.io.FileReader;
-import java.util.*;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
-import com.google.gson.Gson;
 
 public class FilterRequests {
 

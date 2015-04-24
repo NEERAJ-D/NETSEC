@@ -1,7 +1,4 @@
 package com.netsec.firewall;
-import com.netsec.firewall.VariableValidation;
-
-import java.util.ArrayList;
 
 public class HeaderInfo {
 	

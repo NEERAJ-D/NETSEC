@@ -6,7 +6,6 @@ public class VariableValidation {
 	public int min;
 	public double standard_deviation;
 	String dataType;
-	double standard_deviation;
 	public VariableValidation() {
 		// TODO Auto-generated constructor stub
 		max = 0;
