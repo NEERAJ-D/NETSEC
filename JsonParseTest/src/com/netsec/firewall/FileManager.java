@@ -16,33 +16,9 @@ import org.json.simple.parser.ParseException;
 
 public class FileManager {
 	
-	private static final String REQUESTS = "requests";
-	//Parameter Section
-	private static final String PARAMETERS = "parameters";
+
 	
-	
-	private static final String MAX_PARAMETERS = "maximum_number_of_paramteres";
-	
-	//Header Section
-	private static final String HEADER = "header";
-	
-	//Output File Constants
-	private static final String MINIMUM_TAG  = "min";
-	private static final String MAXIMUM_TAG  = "max";
-	private static final String AVERAGE_TAG  = "average";
-	private static final String STANDARD_DEVIATION_TAG = "standard_deviation";
-	
-	//Header Section
-	private static final String TOTAL_PARAMETERS_TAG  ="totalparameters";
-	private static final String METHOD_TAG = "METHOD";
-	
-	//Parameter Section
-	private static final String ISEMAILID_TAG  ="is_email_id";
-	private static final String ISNUMERIC_TAG  ="is_numeric";
-	private static final String ISALPHABET_TAG  ="is_alphabet";
-	private static final String ISALPHANUMERIC_TAG  ="is_alphanumeric";
-	
-	//File Operations
+	//File Operations Objects
 	private static FileReader file_learning_input;
 	private static BufferedReader file_buffered_reader;
 	private static JSONParser jsonParser;
@@ -52,6 +28,11 @@ public class FileManager {
 		
 	}
 
+	/*****************************************************************************
+	Function Name:ParseAllRequests
+	Function Parameters:None
+	Function Description:Function that parses all the requests from JSON File
+	*****************************************************************************/
 	public static void ParseAllRequests() throws IOException, ParseException
 	{
 		//A pointer to a single request
@@ -80,8 +61,11 @@ public class FileManager {
 		PostProcessing();
 		
 	}
-	
-	//Responsible for updating the standard deviation
+	/*****************************************************************************
+	Function Name:PostProcessing
+	Function Parameters:None
+	Function Description:Function that updates the standard deviation
+	*****************************************************************************/
 	private static void PostProcessing()
 	{
 		//Processing for standard deviation
@@ -129,6 +113,11 @@ public class FileManager {
   
 	}
 	
+	/*****************************************************************************
+	Function Name:ParseRequest
+	Function Parameters:JSONObject request
+	Function Description:Function that parses each request
+	*****************************************************************************/
 	private static void ParseRequest(JSONObject request)
 	{
 		try
@@ -138,21 +127,29 @@ public class FileManager {
 			DataManager.getInstance().current_parameters = new JSONObject();
 			
 	        //Header of request
-			DataManager.getInstance().current_header = (JSONObject) request.get(HEADER);			
+			DataManager.getInstance().current_header = (JSONObject) request.get(FilterConstants.HEADER);			
 	        
 	        //Parameter section of request
-			DataManager.getInstance().current_parameters = (JSONObject) request.get(PARAMETERS);
+			DataManager.getInstance().current_parameters = (JSONObject) request.get(FilterConstants.PARAMETERS);
 			}
 			catch (NullPointerException ex) {
 				ex.printStackTrace();
 			}
 	}
-	
+	/*****************************************************************************
+	Function Name:ReadFromJSONObject
+	Function Parameters:JSONObject obj,String param
+	Function Description:Function that reads from given JSON object
+	*****************************************************************************/
 	private String ReadFromJSONObject(JSONObject obj,String param)
 	 {
 		   return (String) obj.get(param);
 	 }
-	
+	/*****************************************************************************
+	Function Name:InitializeLearningInput
+	Function Parameters:String FILEPATH
+	Function Description:Function that initializes the file reader for input
+	*****************************************************************************/
 	public static void InitializeLearningInput(String FILEPATH)
 	{
 		try
@@ -165,22 +162,18 @@ public class FileManager {
 		}
 	
 	}
+	
+	/*****************************************************************************
+	Function Name:ReadLearningInput
+	Function Parameters:String FILEPATH
+	Function Description:Function that initializes the file reader for input
+	*****************************************************************************/
 	public static void ReadLearningInput()
 	{
-		JSONArray requests = null;
 		try
 		{
-			
 			jsonParser = new JSONParser();
 			file_buffered_reader = new BufferedReader(file_learning_input);
-			
-			
-			//JSONObject jsonObject = (JSONObject) jsonParser.parse(file_learning_input);
-		
-			//All the requests in the input log file
-			//requests = (JSONArray) jsonObject.get(REQUESTS);
-			
-			
 		}
 		
 		catch (NullPointerException ex) {
@@ -188,16 +181,25 @@ public class FileManager {
 		}
 		
 	}
+	/*****************************************************************************
+	Function Name:WriteHeader
+	Function Parameters:JSONObject ObjHeaderInfo,HeaderInfo header_info
+	Function Description:Function that writes the Header
+	*****************************************************************************/
 	private static void WriteHeader(JSONObject ObjHeaderInfo,HeaderInfo header_info)
 	{
-       	ObjHeaderInfo.put(MAXIMUM_TAG, header_info.validation_variable.max);
-		ObjHeaderInfo.put(MINIMUM_TAG, header_info.validation_variable.min);
-		ObjHeaderInfo.put(AVERAGE_TAG, header_info.validation_variable.average);
-		ObjHeaderInfo.put(TOTAL_PARAMETERS_TAG, header_info.totalrequests);
-		ObjHeaderInfo.put(METHOD_TAG, header_info.method);
+       	ObjHeaderInfo.put(FilterConstants.MAXIMUM_TAG, header_info.validation_variable.max);
+		ObjHeaderInfo.put(FilterConstants.MINIMUM_TAG, header_info.validation_variable.min);
+		ObjHeaderInfo.put(FilterConstants.AVERAGE_TAG, header_info.validation_variable.average);
+		ObjHeaderInfo.put(FilterConstants.TOTAL_PARAMETERS_TAG, header_info.totalrequests);
+		ObjHeaderInfo.put(FilterConstants.METHOD_TAG, header_info.method);
 	}
 	
-	
+	/*****************************************************************************
+	Function Name:WriteParameter
+	Function Parameters:JSONArray ParameterArray, Map of Variable Name , Variable Data
+	Function Description:Function that writes the Parameters learnt
+	*****************************************************************************/
 	private static void WriteParameter(JSONArray ParameterArray,HashMap<String,ParameterVariables> parameter_variables_data)
 	{
     	Iterator<Map.Entry <String, ParameterVariables>> parameter_value_map = parameter_variables_data.entrySet().iterator();
@@ -214,16 +216,16 @@ public class FileManager {
     		JSONObject ParameterData = new JSONObject();
     		
     		//Iterate all the parameters
-    		ParameterData.put(MAXIMUM_TAG, parameter_value.validationrules.max );
-    		ParameterData.put(MINIMUM_TAG, parameter_value.validationrules.min);
-    		ParameterData.put(AVERAGE_TAG,parameter_value.validationrules.average );
-    		ParameterData.put(STANDARD_DEVIATION_TAG, parameter_value.validationrules.standard_deviation);
+    		ParameterData.put(FilterConstants.MAXIMUM_TAG, parameter_value.validationrules.max );
+    		ParameterData.put(FilterConstants.MINIMUM_TAG, parameter_value.validationrules.min);
+    		ParameterData.put(FilterConstants.AVERAGE_TAG,parameter_value.validationrules.average );
+    		ParameterData.put(FilterConstants.STANDARD_DEVIATION_TAG, parameter_value.validationrules.standard_deviation);
         	
     		//Write boolean values
-    		ParameterData.put(ISEMAILID_TAG, parameter_value.IsEmailID );
-    		ParameterData.put(ISNUMERIC_TAG, parameter_value.IsNumeric );
-    		ParameterData.put(ISALPHANUMERIC_TAG, parameter_value.IsEmailID );
-    		ParameterData.put(ISALPHABET_TAG, parameter_value.IsCharacter );
+    		ParameterData.put(FilterConstants.ISEMAILID_TAG, parameter_value.IsEmailID );
+    		ParameterData.put(FilterConstants.ISNUMERIC_TAG, parameter_value.IsNumeric );
+    		ParameterData.put(FilterConstants.ISALPHANUMERIC_TAG, parameter_value.IsEmailID );
+    		ParameterData.put(FilterConstants.ISALPHABET_TAG, parameter_value.IsCharacter );
         	
         	ParameterInfo.put(parameter_name,ParameterData );
         	
@@ -232,7 +234,11 @@ public class FileManager {
     	}
     	
 	}
-	
+	/*****************************************************************************
+	Function Name:WriteOutputFile
+	Function Parameters:Output File Path
+	Function Description:Function that writes the output file (i.e) input to next phase
+	*****************************************************************************/
 	public static void WriteOutputFile(String OUTPUTFILEPATH)
 	{
 		try
@@ -262,8 +268,8 @@ public class FileManager {
 
         	//Write the Payload Information
         	JSONObject PayloadInfo = new JSONObject();
-        	PayloadInfo.put(HEADER, ObjHeaderInfo);
-        	PayloadInfo.put(PARAMETERS, ParameterArray);
+        	PayloadInfo.put(FilterConstants.HEADER, ObjHeaderInfo);
+        	PayloadInfo.put(FilterConstants.PARAMETERS, ParameterArray);
         	
         	JSONObject jsonParameterData = new JSONObject();
         	jsonParameterData.put(refererurl, PayloadInfo);
@@ -275,8 +281,8 @@ public class FileManager {
         }//After all the requests have been iterated
         
         JSONObject outputrequests = new JSONObject();
-        outputrequests.put(REQUESTS,jsonArrayOfRequest );
-        outputrequests.put(MAX_PARAMETERS,DataManager.getInstance().maximum_number_of_parameters);
+        outputrequests.put(FilterConstants.REQUESTS,jsonArrayOfRequest );
+        outputrequests.put(FilterConstants.MAX_PARAMETERS,DataManager.getInstance().maximum_number_of_parameters);
         	        
         /* File writing Logic */
         FileWriter file = new FileWriter(OUTPUTFILEPATH,false);
@@ -285,6 +291,11 @@ public class FileManager {
         //System.out.println("\nJSON Object: " + jsonParameterData);
         file.flush();
         file.close();
+        
+        //TODO
+        /* Need to add code for setting flag or constant that flags end of learning */
+        
+        
         
 	} catch (FileNotFoundException ex) {
 		ex.printStackTrace();

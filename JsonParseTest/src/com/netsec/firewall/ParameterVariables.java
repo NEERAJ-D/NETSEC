@@ -2,6 +2,11 @@ package com.netsec.firewall;
 
 import java.util.ArrayList;
 
+/*****************************************************************************
+Class Name:ParameterVariables
+Class Description:Class that stores all learned data for parameters
+*****************************************************************************/
+
 public class ParameterVariables {
 	
 	//Values can be stored for maintaining a list of values for whitelist

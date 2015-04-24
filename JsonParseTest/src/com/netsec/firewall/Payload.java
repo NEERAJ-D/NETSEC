@@ -1,6 +1,11 @@
 package com.netsec.firewall;
 
 import java.util.HashMap;
+
+/*****************************************************************************
+Class Name:Payload
+Class Description:Stores the Header and Parameter for a single URL
+*****************************************************************************/
 public class Payload {
 
 	//Object that stores the Header Information

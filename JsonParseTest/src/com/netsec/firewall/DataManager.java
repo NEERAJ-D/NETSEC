@@ -4,38 +4,22 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import org.json.simple.JSONObject;
-public class DataManager {
 
+/*****************************************************************************
+Class Name:DataManager
+Class Description:Singleton data store
+*****************************************************************************/
+public class DataManager {
+	//boolean ispagevalid;
 	
-	//CONSTANT for regular expressions
-	private static final String regex_emailid = "(?:(?:\\r\\n)?[ \\t])*(?:(?:(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*|(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)*\\<(?:(?:\\r\\n)?[ \\t])*(?:@(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*(?:,@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*)*:(?:(?:\\r\\n)?[ \\t])*)?(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*\\>(?:(?:\\r\\n)?[ \\t])*)|(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)*:(?:(?:\\r\\n)?[ \\t])*(?:(?:(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*|(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)*\\<(?:(?:\\r\\n)?[ \\t])*(?:@(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*(?:,@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*)*:(?:(?:\\r\\n)?[ \\t])*)?(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*\\>(?:(?:\\r\\n)?[ \\t])*)(?:,\\s*(?:(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*|(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)*\\<(?:(?:\\r\\n)?[ \\t])*(?:@(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*(?:,@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*)*:(?:(?:\\r\\n)?[ \\t])*)?(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\"(?:[^\\\"\\r\\\\]|\\\\.|(?:(?:\\r\\n)?[ \\t]))*\"(?:(?:\\r\\n)?[ \\t])*))*@(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*)(?:\\.(?:(?:\\r\\n)?[ \\t])*(?:[^()<>@,;:\\\\\".\\[\\] \\000-\\031]+(?:(?:(?:\\r\\n)?[ \\t])+|\\Z|(?=[\\[\"()<>@,;:\\\\\".\\[\\]]))|\\[([^\\[\\]\\r\\\\]|\\\\.)*\\](?:(?:\\r\\n)?[ \\t])*))*\\>(?:(?:\\r\\n)?[ \\t])*))*)?;\\s*)";
-	private static final String regex_digit = "\\d+";
-	private static final String regex_alphanumeric = "[\\d\\a-zA-Z]+";
-	private static final String regex_alphabet = "[a-zA-Z]+";
-	private static final String regex_file = "\\Aimage/(.)*"; //Only Image Files are acceptable
-	
-	//Constants for File reading 
-	private static final String REQUESTS = "requests";
-	
-	//Parameter Section
-	private static final String PARAMETERS = "parameters";
-	
-	//Header Section
-	private static final String HEADER = "header";
-	private static final String USERAGENT = "user-agent";
-	private static final String CONTENTLENGTH = "content-length";
-	private static final String REFERER = "referer";
-	private static final String METHOD = "method";
-	
-	boolean ispagevalid;
-	
-	int maximum_number_of_parameters;
-	
-	
+	/*
 	public boolean IsPageValid()
 	{
 		return ispagevalid;
 	}
+	*/
+	
+	int maximum_number_of_parameters;
 	
 	//Singleton Design Pattern
 	private static DataManager instance = null;
@@ -46,6 +30,11 @@ public class DataManager {
 		   current_header = new JSONObject();
 		   current_parameters = new JSONObject();
 	   }
+	/*****************************************************************************
+	Function Name:getInstance
+	Function Parameters:None
+	Function Description:Singleton implementation
+	*****************************************************************************/
 	   public static DataManager getInstance() {
 	      if(instance == null) {
 	         instance = new DataManager();
@@ -62,31 +51,40 @@ public class DataManager {
 	   
 	   //Functions
 	   
+	   
+	   /*****************************************************************************
+		Function Name:ReadFromJSONObject
+		Function Parameters:None
+		Function Description:Read JSON Object for a particular key
+		*****************************************************************************/
 	   public String ReadFromJSONObject(JSONObject obj,String param)
 	   {
 		   return (String) obj.get(param);
 	   }
 
-	   //Validate the payload
-	   //Input :: JSONObject Header , JSONObject Parameter
+	   /*****************************************************************************
+		Function Name:ValidatePayload
+		Function Parameters:None
+		Function Description:Validate and populate the data structure for Payload
+		*****************************************************************************/
 	   public void ValidatePayload()
 	   {
 		   String method = null,user_agent = null,content_length = null,referer = null;
 		   	// Extract method type
 		   if(current_header!=null)
-		   		method =  ReadFromJSONObject(current_header,METHOD);
+		   		method =  ReadFromJSONObject(current_header,FilterConstants.METHOD);
 			
 			//Extract user-agent
 		   if(current_header!=null)
-			   user_agent = ReadFromJSONObject(current_header,USERAGENT); 
+			   user_agent = ReadFromJSONObject(current_header,FilterConstants.USERAGENT); 
 			
 			//Extract content-length
 		   if(current_header!=null)
-			 content_length = ReadFromJSONObject(current_header,CONTENTLENGTH); 
+			 content_length = ReadFromJSONObject(current_header,FilterConstants.CONTENTLENGTH); 
 			
 			//Extract referer
 		   if(current_header!=null)
-			 referer =  ReadFromJSONObject(current_header,REFERER);
+			 referer =  ReadFromJSONObject(current_header,FilterConstants.REFERER);
 			
 			//#DEBUG print statements
 			System.out.println("Method:: " + method);
@@ -149,46 +147,75 @@ public class DataManager {
 				}
 		
 	   }
+	   /*****************************************************************************
+		Function Name:IsFieldEmailID
+		Function Parameters:variable_value
+		Function Description:Check if the variable value is an email id
+		*****************************************************************************/
 	   public boolean IsFieldEmailID(String variable_value)
 	   {
-		   Pattern pattern_emailid = Pattern.compile(regex_emailid);
+		   Pattern pattern_emailid = Pattern.compile(FilterConstants.regex_emailid);
 		   //Check if E-mail field
 			boolean IsEmailid =  (pattern_emailid.matcher(variable_value).matches() ? true : false);
 			return IsEmailid;
 	   }
+	   /*****************************************************************************
+		Function Name:IsFieldNumeric
+		Function Parameters:variable_value
+		Function Description:Check if the variable value is numeric
+		*****************************************************************************/
 	   public boolean IsFieldNumeric(String variable_value)
 	   {
-			 Pattern pattern_digit = Pattern.compile(regex_digit);
+			 Pattern pattern_digit = Pattern.compile(FilterConstants.regex_digit);
 			 //Check if regex digit field
 			 boolean IsNumeric  ;//= need to extract IsNumeric variable from stored;
 			 IsNumeric =  (pattern_digit.matcher(variable_value).matches() ? true : false);
 			 return  IsNumeric;
 	   }
+	   /*****************************************************************************
+		Function Name:IsFieldAlphaNumeric
+		Function Parameters:variable_value
+		Function Description:Check if the variable value is alpha numeric
+		*****************************************************************************/
 	   public boolean IsFieldAlphaNumeric(String variable_value)
 	   {
-		   Pattern pattern_alphanumeric = Pattern.compile(regex_alphanumeric);
+		   Pattern pattern_alphanumeric = Pattern.compile(FilterConstants.regex_alphanumeric);
 			 //Check if regex digit field
 			 boolean IsAlphanumeric  ;//= need to extract IsAlphanumeric variable from stored;
 			 IsAlphanumeric =  (pattern_alphanumeric.matcher(variable_value).matches() ? true : false);
 			 return IsAlphanumeric;
 	   }
+	   /*****************************************************************************
+		Function Name:IsFieldAlphabet
+		Function Parameters:variable_value
+		Function Description:Check if the variable value is character
+		*****************************************************************************/
 	   public boolean IsFieldAlphabet(String variable_value)
 	   {
-			 Pattern pattern_alphabet = Pattern.compile(regex_alphabet);
+			 Pattern pattern_alphabet = Pattern.compile(FilterConstants.regex_alphabet);
 			 //Check if regex digit field
 			 boolean IsAlphabet  ;//= need to extract IsAlphanumeric variable from stored;
 			 IsAlphabet =  (pattern_alphabet.matcher(variable_value).matches() ? true : false);
 			 return IsAlphabet;
 	   }
-	   
+	   /*****************************************************************************
+		Function Name:IsFieldFile
+		Function Parameters:variable_value
+		Function Description:Check if the variable value is a file
+		*****************************************************************************/
 	   public boolean IsFieldFile(String variable_value)
 	   {
-			 Pattern pattern_alphabet = Pattern.compile(regex_file);
+			 Pattern pattern_alphabet = Pattern.compile(FilterConstants.regex_file);
 			 //Check if regex digit field
 			 boolean IsFile  ;//= need to extract IsAlphanumeric variable from stored;
 			 IsFile =  (pattern_alphabet.matcher(variable_value).matches() ? true : false);
 			 return IsFile;
 	   }
+	   /*****************************************************************************
+		Function Name:ValidateParameters
+		Function Parameters:Payload Object
+		Function Description:Validate the parameters and store the paramters
+		*****************************************************************************/
 	   private void ValidateParameters(JSONObject parameters,Payload temporary)
 	   {
 		   
@@ -301,33 +328,9 @@ public class DataManager {
 				 * UNCOMMENT IF LEARNING DECIDE TO TRAIN ON INCORRECT INPUT ALSO
 				//temp_instance.IsAlphaNumeric has been initialized to true, so first time value is true, and if true only then 
 				//check if next value is true, first time false appears do not check from next time
-				if(temp_instance.IsEmailID)
-				{
-					temp_instance.IsEmailID = IsEmailid;
-				}
-				else
-				{
-					if(temp_instance.IsNumeric)
-					{
-						temp_instance.IsNumeric = IsNumeric;
-					}
-					else
-					{
-						if(temp_instance.IsCharacter)
-						{
-							temp_instance.IsCharacter = IsAlphabet;
-						}
-						else if(temp_instance.IsAlphaNumeric)
-						{
-							temp_instance.IsAlphaNumeric = IsAlphanumeric;
-						}
-						
-					}
-				}
+
 				*/
-		
-				//File upload regular expressions to be written
-			
+					
 				//add variables to map (variable_name --> ParameterVariables structure )
 				temporary.variables_data.put(variable_name, temp_instance);
 			

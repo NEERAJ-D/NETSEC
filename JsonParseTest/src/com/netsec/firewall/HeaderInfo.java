@@ -1,5 +1,8 @@
 package com.netsec.firewall;
-
+/*****************************************************************************
+Class Name:HeaderInfo
+Class Description:Class that stores all learned data for header
+*****************************************************************************/
 public class HeaderInfo {
 	
 		/* Class Contains generic information that needs to be stored */

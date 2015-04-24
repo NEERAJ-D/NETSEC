@@ -1,5 +1,8 @@
 package com.netsec.firewall;
-
+/*****************************************************************************
+Class Name:VariableValidation
+Class Description:Class responsible for validation of variables having min,max,average etc.
+*****************************************************************************/
 public class VariableValidation {
 	public int max;
 	public int average;
