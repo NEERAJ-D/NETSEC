@@ -5,12 +5,14 @@ public class VariableValidation {
 	public int average;
 	public int min;
 	String dataType;
+	double standard_deviation;
 	public VariableValidation() {
 		// TODO Auto-generated constructor stub
 		max = 0;
 		average = 0;
 		min = Integer.MAX_VALUE;
 		dataType = "";
+		standard_deviation = 0;
 	}
 	public VariableValidation(int nmax,int naverage,int nmin,String dttype) {
 		// TODO Auto-generated constructor stub

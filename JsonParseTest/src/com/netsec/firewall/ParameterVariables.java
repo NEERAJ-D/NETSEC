@@ -26,6 +26,7 @@ public class ParameterVariables {
 		
 		validationrules = new VariableValidation();
 		parameterValues = new ArrayList<String>();
+		listofcontentlengths = new ArrayList<Integer>();
 	}
 	
 }

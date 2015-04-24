@@ -1,5 +1,6 @@
 package com.netsec.firewall;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,6 +21,9 @@ public class FileManager {
 	//Parameter Section
 	private static final String PARAMETERS = "parameters";
 	
+	
+	private static final String MAX_PARAMETERS = "maximum_number_of_paramteres";
+	
 	//Header Section
 	private static final String HEADER = "header";
 	
@@ -27,6 +31,7 @@ public class FileManager {
 	private static final String MINIMUM_TAG  = "min";
 	private static final String MAXIMUM_TAG  = "max";
 	private static final String AVERAGE_TAG  = "average";
+	private static final String STANDARD_DEVIATION_TAG = "standard_deviation";
 	
 	//Header Section
 	private static final String TOTAL_PARAMETERS_TAG  ="totalparameters";
@@ -38,37 +43,42 @@ public class FileManager {
 	private static final String ISALPHABET_TAG  ="is_alphabet";
 	private static final String ISALPHANUMERIC_TAG  ="is_alphanumeric";
 	
-	
-	
+	//File Operations
 	private static FileReader file_learning_input;
+	private static BufferedReader file_buffered_reader;
+	private static JSONParser jsonParser;
+	
 	FileManager ()
 	{
 		
 	}
 
-	public static void ParseAllRequests(JSONArray requests)
+	public static void ParseAllRequests() throws IOException, ParseException
 	{
 		//A pointer to a single request
-		Iterator singlerequest = requests.iterator();
+		//Iterator singlerequest = requests.iterator();
 		
-		while (singlerequest.hasNext()) {
+		//JSON String that reads a single line of input
+		String jsonString="";
+		
+		while ((jsonString=file_buffered_reader.readLine())!=null) {
 	        	
 	        	//Single Request object
-	            JSONObject request = (JSONObject) singlerequest.next();
+	            //JSONObject request = (JSONObject) singlerequest.next();
+				JSONObject jsonSingleRequest = (JSONObject) jsonParser.parse(jsonString);
+			
 	            //Parse a single request           
-	            ParseRequest(request);
+	            ParseRequest(jsonSingleRequest);
+	            
 	            //Validate the Payload
 	            DataManager.getInstance().ValidatePayload();
-				//Separator print #DEBUG
+				
+	            //Separator print #DEBUG
 	        	System.out.println("-------------------");
 				}
 		
-
-    	
-		
-		
-		
-		
+		//Standard deviation calculation
+		PostProcessing();
 		
 	}
 	
@@ -81,7 +91,10 @@ public class FileManager {
 		
 		//Iterate the map for each URL each parameter
 		Iterator<Map.Entry <String, Payload>> RefererPayload = DataManager.getInstance().refererurlmap.entrySet().iterator();
-    	
+ 		
+		double standard_deviation = 0;
+		int totalnumberofvariablevalues = 0;
+		int maximum_number_of_parameters = 0;
     	while(RefererPayload.hasNext())
     	{
     		Map.Entry <String, Payload> single_payload = RefererPayload.next();
@@ -91,22 +104,30 @@ public class FileManager {
     		while(mapsinglepageparameter.hasNext())
     		{
     			Map.Entry <String,ParameterVariables> singlepage_paramter_value = mapsinglepageparameter.next();
-  			
+    			
+    			totalnumberofvariablevalues = singlepage_paramter_value.getValue().listofcontentlengths.size();
+    			
     			
     			for( Integer singlelement : singlepage_paramter_value.getValue().listofcontentlengths)
     			{
-    				//Calculate mean
-    				
+    				   				
     				//Calculate abs(individual - mean)
+    				standard_deviation = standard_deviation + Math.pow(singlelement - singlepage_paramter_value.getValue().validationrules.average  , 2);
     				
-    				//Divide by the N
     			}
+    			double sd = Math.sqrt(standard_deviation/(totalnumberofvariablevalues));
     			
-    			
+    			//Need to write the standard deviation sd to the file
+    	    	singlepage_paramter_value.getValue().validationrules.standard_deviation = sd;
+    	 
+    	    	
     		}
+    		//Find the maximum number of parameters all pages
+    		if(maximum_number_of_parameters < single_payload.getValue().header_data.total_number_of_variables)
+    			maximum_number_of_parameters = single_payload.getValue().header_data.total_number_of_variables;
     	}
-    	
-    	//Find the maximum number of parameters all pages
+    	DataManager.getInstance().maximum_number_of_parameters = maximum_number_of_parameters;
+  
 	}
 	
 	private static void ParseRequest(JSONObject request)
@@ -145,29 +166,28 @@ public class FileManager {
 		}
 	
 	}
-	public static JSONArray ReadLearningInput()
+	public static void ReadLearningInput()
 	{
 		JSONArray requests = null;
 		try
 		{
-			JSONParser jsonParser = new JSONParser();
-			JSONObject jsonObject = (JSONObject) jsonParser.parse(file_learning_input);
+			
+			jsonParser = new JSONParser();
+			file_buffered_reader = new BufferedReader(file_learning_input);
+			
+			
+			//JSONObject jsonObject = (JSONObject) jsonParser.parse(file_learning_input);
 		
 			//All the requests in the input log file
-			requests = (JSONArray) jsonObject.get(REQUESTS);
+			//requests = (JSONArray) jsonObject.get(REQUESTS);
 			
 			
 		}
 		
-		catch (IOException ex) {
-			ex.printStackTrace();
-		} catch(ParseException ex)
-		{
-			ex.printStackTrace();
-		}catch (NullPointerException ex) {
+		catch (NullPointerException ex) {
 			ex.printStackTrace();
 		}
-		return requests;
+		
 	}
 	private static void WriteHeader(JSONObject ObjHeaderInfo,HeaderInfo header_info)
 	{
@@ -198,6 +218,7 @@ public class FileManager {
     		ParameterData.put(MAXIMUM_TAG, parameter_value.validationrules.max );
     		ParameterData.put(MINIMUM_TAG, parameter_value.validationrules.min);
     		ParameterData.put(AVERAGE_TAG,parameter_value.validationrules.average );
+    		ParameterData.put(STANDARD_DEVIATION_TAG, parameter_value.validationrules.standard_deviation);
         	
     		//Write boolean values
     		ParameterData.put(ISEMAILID_TAG, parameter_value.IsEmailID );
@@ -220,7 +241,7 @@ public class FileManager {
         Iterator<Map.Entry <String, Payload>> refererurllist = DataManager.getInstance().refererurlmap.entrySet().iterator();
         /* Iterate the HashMap and print contents */
         System.out.println("Printing map contents to JSON File");   
-        JSONObject jsonParameterData = new JSONObject(DataManager.getInstance().refererurlmap);
+        //JSONObject jsonParameterData = new JSONObject(DataManager.getInstance().refererurlmap);
         JSONArray jsonArrayOfRequest = new JSONArray();
         while (refererurllist.hasNext()) {
         	
@@ -229,6 +250,8 @@ public class FileManager {
         	//Get the URL and the payload associated with the URL
         	String refererurl = entry.getKey();
         	Payload temp = (Payload)entry.getValue();
+        	
+        	System.out.println("URL::" + refererurl);
         	
         	//Write Header Information
         	JSONObject ObjHeaderInfo = new JSONObject();
@@ -242,6 +265,8 @@ public class FileManager {
         	JSONObject PayloadInfo = new JSONObject();
         	PayloadInfo.put(HEADER, ObjHeaderInfo);
         	PayloadInfo.put(PARAMETERS, ParameterArray);
+        	
+        	JSONObject jsonParameterData = new JSONObject();
         	jsonParameterData.put(refererurl, PayloadInfo);
         	
         	//Add the parameter in the Arraylist of requests
@@ -252,12 +277,13 @@ public class FileManager {
         
         JSONObject outputrequests = new JSONObject();
         outputrequests.put(REQUESTS,jsonArrayOfRequest );
+        outputrequests.put(MAX_PARAMETERS,DataManager.getInstance().maximum_number_of_parameters);
         	        
         /* File writing Logic */
-        FileWriter file = new FileWriter(OUTPUTFILEPATH);
+        FileWriter file = new FileWriter(OUTPUTFILEPATH,false);
         file.write(outputrequests.toJSONString());  
         System.out.println("Successfully Copied JSON Object to File...");
-        System.out.println("\nJSON Object: " + jsonParameterData);
+        //System.out.println("\nJSON Object: " + jsonParameterData);
         file.flush();
         file.close();
         

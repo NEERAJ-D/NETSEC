@@ -14,7 +14,7 @@ public class DataManager {
 	private static final String regex_digit = "\\d+";
 	private static final String regex_alphanumeric = "[\\d\\a-zA-Z]+";
 	private static final String regex_alphabet = "[a-zA-Z]+";
-	private static final String regex_file = "\\Aimage\\\\(.)*"; //Only Image Files are acceptable
+	private static final String regex_file = "\\Aimage/(.)*"; //Only Image Files are acceptable
 	
 	//Constants for File reading 
 	private static final String REQUESTS = "requests";
@@ -31,6 +31,8 @@ public class DataManager {
 	
 	boolean ispagevalid;
 	
+	int maximum_number_of_parameters;
+	
 	
 	public boolean IsPageValid()
 	{
@@ -42,6 +44,9 @@ public class DataManager {
 	   protected DataManager() {
 	      // Exists only to defeat instantiation.
 		   refererurlmap = new HashMap<String, Payload>();
+		   maximum_number_of_parameters = 0;
+		   current_header = new JSONObject();
+		   current_parameters = new JSONObject();
 	   }
 	   public static DataManager getInstance() {
 	      if(instance == null) {
@@ -63,24 +68,27 @@ public class DataManager {
 	   {
 		   return (String) obj.get(param);
 	   }
-	   
-	   
-   
+
 	   //Validate the payload
 	   //Input :: JSONObject Header , JSONObject Parameter
 	   public void ValidatePayload()
 	   {
+		   String method = null,user_agent = null,content_length = null,referer = null;
 		   	// Extract method type
-		   	String method =  ReadFromJSONObject(current_header,METHOD);
+		   if(current_header!=null)
+		   		method =  ReadFromJSONObject(current_header,METHOD);
 			
 			//Extract user-agent
-			String user_agent = ReadFromJSONObject(current_header,USERAGENT); 
+		   if(current_header!=null)
+			   user_agent = ReadFromJSONObject(current_header,USERAGENT); 
 			
 			//Extract content-length
-			String content_length = ReadFromJSONObject(current_header,CONTENTLENGTH); 
+		   if(current_header!=null)
+			 content_length = ReadFromJSONObject(current_header,CONTENTLENGTH); 
 			
 			//Extract referer
-			String referer =  ReadFromJSONObject(current_header,REFERER);
+		   if(current_header!=null)
+			 referer =  ReadFromJSONObject(current_header,REFERER);
 			
 			//#DEBUG print statements
 			System.out.println("Method:: " + method);

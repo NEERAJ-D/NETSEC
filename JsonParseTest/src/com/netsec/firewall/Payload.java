@@ -14,6 +14,8 @@ public class Payload {
 	//Map that stores the Parameter Variable Information
 	public HashMap<String,ParameterVariables> variables_data = null; 
 	
+	public Integer maximum_number_of_parameters;
+	
 	//Default Constructor 
 	Payload()
 	{
