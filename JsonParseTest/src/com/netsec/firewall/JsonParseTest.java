@@ -14,17 +14,6 @@ public class JsonParseTest {
 	private static final String INPUTFILEPATH = "D:\\Study\\Network Security\\training.log";
 	private static final String OUTPUTFILEPATH = "D:\\Study\\Network Security\\modelfile.json";
 	
-	
-	public static void main(String[] args) throws IOException {
-		
-		
-		//TODO Add code for reading constants for input file path, as well as output file path
-		
-		//Trigger Learning
-		StartLearning();
-
-	}
-	
 	/*****************************************************************************
 	Function Name:StartLearning
 	Function Parameters:
