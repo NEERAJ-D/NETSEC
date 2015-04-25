@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -11,12 +13,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class ModelReader {
-
+	private static final Logger logger = Logger.getLogger("NETSEC");
+	
 	public static void generateModel() {
 		JSONParser parser = new JSONParser();
 		String input_file_path = WAFParameters.getMODEL_FILE();
 		HashMap<String, Payload> refererurlmap = new HashMap<String, Payload>();
 		int max_number_of_parameters = 0;
+		//logger.log(Level.WARNING, "Parameters  : " + parameters.toString());
+		logger.log(Level.WARNING, "ModelReader starting to read model");
 		try {
 			JSONObject obj = (JSONObject) parser.parse(new FileReader(
 					input_file_path));
@@ -85,6 +90,7 @@ public class ModelReader {
 			}
 		DataManager.getInstance().setmap(refererurlmap);
 		DataManager.getInstance().setmaxparameters(max_number_of_parameters);
+		logger.log(Level.WARNING, "ModelReader finished reading the model.");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -94,6 +100,11 @@ public class ModelReader {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.log(Level.SEVERE, "Error in ModelReader:" + e.toString());
 		}
 		//return refererurlmap;
 	}
