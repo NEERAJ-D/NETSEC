@@ -13,6 +13,9 @@ public class WAFParameters implements FileChangeListener {
 	private static String MODEL_FILE;
 	private static String LOG_FILE;
 	private static String propertyHome = System.getenv("CATALINA_HOME");
+	
+	//Flag that indicates learning phase is complete
+	private static boolean isLearning;
 
 	protected WAFParameters() throws FileNotFoundException {
 		loadProperties();
@@ -54,6 +57,15 @@ public class WAFParameters implements FileChangeListener {
 		return instance;
 	}
 
+	public static boolean IsLearning()
+	{
+		return isLearning; 
+	}
+	
+	public static void SetLearning(boolean flag)
+	{
+		 isLearning = flag;
+	}
 	public static void loadProperties() {
 
 		try {

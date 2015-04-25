@@ -292,10 +292,8 @@ public class FileManager {
         file.flush();
         file.close();
         
-        //TODO
-        /* Need to add code for setting flag or constant that flags end of learning */
-        
-        
+        //Flag that indicates the learning phase completion
+        WAFParameters.getInstance().SetLearning(true);
         
 	} catch (FileNotFoundException ex) {
 		ex.printStackTrace();
