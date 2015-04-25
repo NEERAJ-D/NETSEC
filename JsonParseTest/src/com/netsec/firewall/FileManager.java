@@ -226,7 +226,7 @@ public class FileManager {
     		ParameterData.put(FilterConstants.ISNUMERIC_TAG, parameter_value.IsNumeric );
     		ParameterData.put(FilterConstants.ISALPHANUMERIC_TAG, parameter_value.IsEmailID );
     		ParameterData.put(FilterConstants.ISALPHABET_TAG, parameter_value.IsCharacter );
-        	
+    		ParameterData.put(FilterConstants.ISFILE_TAG, parameter_value.IsFile );
         	ParameterInfo.put(parameter_name,ParameterData );
         	
         	//Add parameter to the parameter array
@@ -303,7 +303,5 @@ public class FileManager {
 		ex.printStackTrace();
 	}
 	}
-	
-	
 
 }
