@@ -1,7 +1,12 @@
 package com.netsec.firewall;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -25,6 +30,7 @@ public class FilterRequests {
 			e.printStackTrace();
 		}
 	}
+	
 
 	public static boolean filterRequests(UserRequest request) {
 
@@ -109,7 +115,7 @@ public class FilterRequests {
 		if (head == false)
 			return false;
 		else {
-			boolean param = filterParameters(parameters);
+			boolean param = filterParameters(parameters, header);
 			if (param == false)
 				return false;
 		}
@@ -138,12 +144,12 @@ public class FilterRequests {
 		return true;
 	}
 
-	public static boolean filterParameters(Map<String, String> parameters) {
+	public static boolean filterParameters(Map<String, String> parameters,Map<String, String> header) {
 
 		int number;
 		boolean temp = false;
 		logger.warn("Parameters  : " + parameters.toString());
-		String url = parameters.get(FilterConstants.REFERER);
+		String url = header.get(FilterConstants.REFERER);
 		Payload p = DataManager.getInstance().refererurlmap.get(url);
 		logger.warn("Payload  : " + DataManager.getInstance().refererurlmap);
 		if (p != null) {
