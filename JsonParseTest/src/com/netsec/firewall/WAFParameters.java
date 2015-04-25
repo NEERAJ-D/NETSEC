@@ -12,9 +12,10 @@ public class WAFParameters implements FileChangeListener {
 	private static String SIGNATURE_FILE;
 	private static String MODEL_FILE;
 	private static String LOG_FILE;
+	private static String CURRENT_STATE;
 	private static String propertyHome = System.getenv("CATALINA_HOME");
-	
-	//Flag that indicates learning phase is complete
+
+	// Flag that indicates learning phase is complete
 	private static boolean isLearning;
 
 	protected WAFParameters() throws FileNotFoundException {
@@ -49,23 +50,44 @@ public class WAFParameters implements FileChangeListener {
 		LOG_FILE = lOG_FILE;
 	}
 
-	public static WAFParameters getInstance() throws FileNotFoundException {
+	public static WAFParameters getInstance() {
+
 		if (instance == null) {
-			instance = new WAFParameters();
+			try {
+				instance = new WAFParameters();
+			} catch (Exception ex) {
+				System.out.println();
+			}
 		}
-		System.out.println(instance.toString());
 		return instance;
 	}
 
-	public static boolean IsLearning()
-	{
-		return isLearning; 
-	}
 	
-	public static void SetLearning(boolean flag)
-	{
-		 isLearning = flag;
+
+	public static Properties getCONFIG_FILE_PATHS() {
+		return CONFIG_FILE_PATHS;
 	}
+
+	public static void setCONFIG_FILE_PATHS(Properties cONFIG_FILE_PATHS) {
+		CONFIG_FILE_PATHS = cONFIG_FILE_PATHS;
+	}
+
+	public static String getCURRENT_STATE() {
+		return CURRENT_STATE;
+	}
+
+	public static void setCURRENT_STATE(String cURRENT_STATE) {
+		CURRENT_STATE = cURRENT_STATE;
+	}
+
+	public static boolean isLearning() {
+		return isLearning;
+	}
+
+	public static void setLearning(boolean isLearning) {
+		WAFParameters.isLearning = isLearning;
+	}
+
 	public static void loadProperties() {
 
 		try {
@@ -75,6 +97,9 @@ public class WAFParameters implements FileChangeListener {
 			String logFile = CONFIG_FILE_PATHS.getProperty("logFile");
 			String signaturesFile = CONFIG_FILE_PATHS
 					.getProperty("signaturesFile");
+			String state = CONFIG_FILE_PATHS
+					.getProperty("state");
+			
 			if (modelFile != null) {
 				setMODEL_FILE(propertyHome + modelFile);
 			}
@@ -83,6 +108,9 @@ public class WAFParameters implements FileChangeListener {
 			}
 			if (signaturesFile != null) {
 				setSIGNATURE_FILE(propertyHome + signaturesFile);
+			}
+			if (state != null) {
+				setCURRENT_STATE(state);
 			}
 
 		} catch (IOException e) {
