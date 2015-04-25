@@ -35,6 +35,7 @@ public interface FilterConstants {
 	//Header Section
 	static final String TOTAL_PARAMETERS_TAG  ="totalparameters";
 	static final String METHOD_TAG = "METHOD";
+	static final String HEADER_TAG = "HEADER";
 	
 	//Parameter Section
 	static final String ISEMAILID_TAG  ="is_email_id";
