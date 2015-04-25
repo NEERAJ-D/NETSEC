@@ -2,8 +2,8 @@ package com.netsec.firewall;
 
 import java.util.*;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 public class FilterRequests {
 
@@ -142,13 +142,13 @@ public class FilterRequests {
 
 		int number;
 		boolean temp = false;
-		logger.log(Level.WARNING, "Parameters  : " + parameters.toString());
+		logger.warn("Parameters  : " + parameters.toString());
 		String url = parameters.get(FilterConstants.REFERER);
 		Payload p = DataManager.getInstance().refererurlmap.get(url);
-		logger.log(Level.WARNING, "Payload  : " + DataManager.getInstance().refererurlmap);
+		logger.warn("Payload  : " + DataManager.getInstance().refererurlmap);
 		if (p != null) {
 			if (parameters.size() != p.variables_data.size()) {
-				logger.log(Level.SEVERE, "Incorrect number of Parameters");
+				logger.warn("Incorrect number of Parameters");
 				return false;
 			}
 
@@ -160,11 +160,11 @@ public class FilterRequests {
 				
 				if (!(DataManager.getInstance().IsFieldFile(key))) {
 					if (!parameters.containsKey(key)) {
-						logger.log(Level.SEVERE, "Invalid Parameter");
+						logger.warn( "Invalid Parameter");
 						return false;
 					}
 					String req_value = parameters.get(key);
-					logger.log(Level.SEVERE, "Value for " + key
+					logger.warn( "Value for " + key
 							+ "is" + req_value+" : "+value.toString());
 					double std_dev = p.variables_data.get(key).validationrules.standard_deviation;
 					int avg = p.variables_data.get(key).validationrules.average;
@@ -174,18 +174,18 @@ public class FilterRequests {
 					if (temp) {
 						number = Integer.parseInt(req_value);
 						if (number > value.validationrules.max) {
-							logger.log(Level.SEVERE, "Value for " + key
+							logger.warn("Value for " + key
 									+ " exceeded the limit");
 							return false;
 						}
 						if (number < value.validationrules.min) {
-							logger.log(Level.SEVERE, "Value for " + key
+							logger.warn("Value for " + key
 									+ " under the limit");
 							return false;
 						}
 						if ((avg - std_dev) > number
 								|| number > (avg + std_dev)) {
-							logger.log(Level.SEVERE, "Value for " + key
+							logger.warn("Value for " + key
 									+ " is out of bound");
 							return false;
 						}
@@ -193,18 +193,18 @@ public class FilterRequests {
 					} else {
 						number = req_value.length();
 						if (number > value.validationrules.max) {
-							logger.log(Level.SEVERE, "Content length for "
+							logger.warn("Content length for "
 									+ key + " exceeded the limit");
 							return false;
 						}
 						if (number < value.validationrules.min) {
-							logger.log(Level.SEVERE, "Content length for "
+							logger.warn("Content length for "
 									+ key + " under the limit");
 							return false;
 						}
 						if ((avg - std_dev) > number
 								|| number > (avg + std_dev)) {
-							logger.log(Level.SEVERE, "Content Length for "
+							logger.warn("Content Length for "
 									+ key + " is out of bound");
 							return false;
 						}
@@ -212,29 +212,28 @@ public class FilterRequests {
 					}
 
 					if (temp != value.IsNumeric) {
-						logger.log(Level.SEVERE,
+						logger.warn(
 								"Type mismatch : Numeric value expected");
 						return false;
 					}
 
 					temp = DataManager.getInstance().IsFieldEmailID(req_value);
 					if (temp != value.IsEmailID) {
-						logger.log(Level.SEVERE, "Not an valid Email");
+						logger.warn("Not an valid Email");
 						return false;
 					}
 
 					temp = DataManager.getInstance().IsFieldAlphaNumeric(
 							req_value);
 					if (temp != value.IsAlphaNumeric) {
-						logger.log(Level.SEVERE,
+						logger.warn(
 								"Type mismatch : Alpha Numeric value expected");
 						return false;
 					}
 
 					temp = DataManager.getInstance().IsFieldAlphabet(req_value);
 					if (temp != value.IsCharacter) {
-						logger.log(Level.SEVERE,
-								"Type mismatch : only Alphabets expected");
+						logger.warn("Type mismatch : only Alphabets expected");
 						return false;
 					}
 				}
