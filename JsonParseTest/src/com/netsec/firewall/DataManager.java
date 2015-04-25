@@ -3,6 +3,7 @@ package com.netsec.firewall;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
 /*****************************************************************************
@@ -20,6 +21,8 @@ public class DataManager {
 	*/
 	
 	int maximum_number_of_parameters;
+	
+	private static final Logger logger = Logger.getLogger("NETSEC");
 	
 	//Singleton Design Pattern
 	private static DataManager instance = null;
@@ -78,6 +81,7 @@ public class DataManager {
 		*****************************************************************************/
 	   public void ValidatePayload()
 	   {
+		   logger.info("Validating Payload");
 		   String method = null,user_agent = null,content_length = null,referer = null;
 		   	// Extract method type
 		   if(current_header!=null)
@@ -96,10 +100,11 @@ public class DataManager {
 			 referer =  ReadFromJSONObject(current_header,FilterConstants.REFERER);
 			
 			//#DEBUG print statements
-			System.out.println("Method:: " + method);
-			System.out.println("User Agent:: " + user_agent);
-			System.out.println("Content length:: " + content_length);
-			System.out.println("Referer:: " + referer);
+		   logger.debug("Method:: " + method);
+		   logger.debug("User Agent:: " + user_agent);
+		   logger.debug("Content length:: " + content_length);
+		   logger.debug("Referer:: " + referer);
+						
 			Payload temporary;
 			
 			//If valid contents do exist on the page (Added Check since some pages do not have content-length
@@ -230,12 +235,12 @@ public class DataManager {
 		*****************************************************************************/
 	   private void ValidateParameters(JSONObject parameters,Payload temporary)
 	   {
-		   
+		   logger.info("Validating Parameters");
 		 //Read the variable names
 			for ( Object key : parameters.keySet() ) { 
 				 //System.out.println( key.toString() );
 				
-				 System.out.println(key.toString() +":" + parameters.get(key.toString()));
+				 
 				 String variable_name = (String)key.toString();
 				 String variable_value = (String)parameters.get(variable_name);
 				 					 

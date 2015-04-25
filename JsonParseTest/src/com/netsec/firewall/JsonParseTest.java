@@ -2,6 +2,7 @@ package com.netsec.firewall;
 
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 /*****************************************************************************
 Class Name:JsonParseTest
@@ -13,6 +14,8 @@ public class JsonParseTest {
 	//temporary declarations
 	private static final String INPUTFILEPATH = WAFParameters.getLOG_FILE();
 	private static final String OUTPUTFILEPATH = WAFParameters.getMODEL_FILE();
+	
+	private static final Logger logger = Logger.getLogger("NETSEC");
 	
 	/*****************************************************************************
 	Function Name:StartLearning
@@ -28,6 +31,8 @@ public class JsonParseTest {
 			String inputfile = INPUTFILEPATH;
 			//Read the Output file String constant from properties file constant
 			String outputfile = OUTPUTFILEPATH;
+			
+			logger.debug("Starting learning process...");
 			
 			//Provides the input log file for learning
 			FileManager.InitializeLearningInput(inputfile);

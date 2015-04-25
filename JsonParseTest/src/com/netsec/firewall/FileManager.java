@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -22,6 +23,8 @@ public class FileManager {
 	private static FileReader file_learning_input;
 	private static BufferedReader file_buffered_reader;
 	private static JSONParser jsonParser;
+	
+	private static final Logger logger = Logger.getLogger("NETSEC");
 	
 	FileManager ()
 	{
@@ -41,25 +44,35 @@ public class FileManager {
 		//JSON String that reads a single line of input
 		String jsonString="";
 		
+		logger.debug("Parsing all requests");
+		
 		while ((jsonString=file_buffered_reader.readLine())!=null) {
 	        	
 	        	//Single Request object
 	            //JSONObject request = (JSONObject) singlerequest.next();
 				JSONObject jsonSingleRequest = (JSONObject) jsonParser.parse(jsonString);
 			
-	            //Parse a single request           
-	            ParseRequest(jsonSingleRequest);
-	            
-	            //Validate the Payload
-	            DataManager.getInstance().ValidatePayload();
+	            //Parse a single request
+				if(jsonSingleRequest != null)
+				{
+					
+					ParseRequest(jsonSingleRequest);
+					logger.debug("Single request has been parsed successfully");
+					
+					//Validate the Payload
+					DataManager.getInstance().ValidatePayload();
 				
-	            //Separator print #DEBUG
-	        	System.out.println("-------------------");
+					logger.debug("Payload validated");
+					//Separator print #DEBUG
+					System.out.println("-------------------");
 				}
+			}
+		
 		
 		//Standard deviation calculation
 		PostProcessing();
 		
+		logger.debug("Post Processing Completed");
 	}
 	/*****************************************************************************
 	Function Name:PostProcessing
@@ -89,7 +102,6 @@ public class FileManager {
     			Map.Entry <String,ParameterVariables> singlepage_paramter_value = mapsinglepageparameter.next();
     			
     			totalnumberofvariablevalues = singlepage_paramter_value.getValue().listofcontentlengths.size();
-    			
     			
     			for( Integer singlelement : singlepage_paramter_value.getValue().listofcontentlengths)
     			{
@@ -126,6 +138,8 @@ public class FileManager {
 			DataManager.getInstance().current_header = new JSONObject();
 			DataManager.getInstance().current_parameters = new JSONObject();
 			
+			logger.debug("Request fetched from the file");
+			
 	        //Header of request
 			DataManager.getInstance().current_header = (JSONObject) request.get(FilterConstants.HEADER);			
 	        
@@ -133,7 +147,7 @@ public class FileManager {
 			DataManager.getInstance().current_parameters = (JSONObject) request.get(FilterConstants.PARAMETERS);
 			}
 			catch (NullPointerException ex) {
-				ex.printStackTrace();
+				logger.error(ex.getStackTrace());
 			}
 	}
 	/*****************************************************************************
@@ -156,9 +170,10 @@ public class FileManager {
 		{
 			// read the json file
 			file_learning_input = new FileReader(FILEPATH);
+			
 		}
 		catch (FileNotFoundException ex) {
-			ex.printStackTrace();
+			logger.error("",ex);
 		}
 	
 	}
@@ -175,9 +190,8 @@ public class FileManager {
 			jsonParser = new JSONParser();
 			file_buffered_reader = new BufferedReader(file_learning_input);
 		}
-		
 		catch (NullPointerException ex) {
-			ex.printStackTrace();
+			logger.error("",ex);
 		}
 		
 	}
@@ -287,7 +301,7 @@ public class FileManager {
         /* File writing Logic */
         FileWriter file = new FileWriter(OUTPUTFILEPATH,false);
         file.write(outputrequests.toJSONString());  
-        System.out.println("Successfully Copied JSON Object to File...");
+        logger.info("Successfully Copied JSON Object to File.");
         //System.out.println("\nJSON Object: " + jsonParameterData);
         file.flush();
         file.close();
@@ -295,12 +309,14 @@ public class FileManager {
         //Flag that indicates the learning phase completion
         WAFParameters.getInstance().setLearning(false);
         
+        
+        
 	} catch (FileNotFoundException ex) {
-		ex.printStackTrace();
+		logger.error("",ex);
 	} catch (IOException ex) {
-		ex.printStackTrace();
+		logger.error("",ex);
 	} catch (NullPointerException ex) {
-		ex.printStackTrace();
+		logger.error("",ex);	
 	}
 	}
 
