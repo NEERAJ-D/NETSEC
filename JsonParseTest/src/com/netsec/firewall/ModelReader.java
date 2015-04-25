@@ -5,8 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,7 +21,8 @@ public class ModelReader {
 		HashMap<String, Payload> refererurlmap = new HashMap<String, Payload>();
 		int max_number_of_parameters = 0;
 		//logger.log(Level.WARNING, "Parameters  : " + parameters.toString());
-		logger.log(Level.WARNING, "ModelReader starting to read model");
+		logger.warn("ModelReader starting to read model");
+		
 		try {
 			JSONObject obj = (JSONObject) parser.parse(new FileReader(
 					input_file_path));
@@ -90,7 +91,7 @@ public class ModelReader {
 			}
 		DataManager.getInstance().setmap(refererurlmap);
 		DataManager.getInstance().setmaxparameters(max_number_of_parameters);
-		logger.log(Level.WARNING, "ModelReader finished reading the model.");
+		logger.warn("ModelReader finished reading the model.");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,7 +105,7 @@ public class ModelReader {
 		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			logger.log(Level.SEVERE, "Error in ModelReader:" + e.toString());
+			logger.error("",e);
 		}
 		//return refererurlmap;
 	}
