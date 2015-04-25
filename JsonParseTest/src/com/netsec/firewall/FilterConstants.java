@@ -21,7 +21,7 @@ public interface FilterConstants {
 	static final String CONTENTLENGTH = "content-length";
 	static final String REFERER = "referer";
 	static final String METHOD = "method";
-	
+	static final String METHOD_GET = "GET";
 
 	static final String MAX_PARAMETERS = "maximum_number_of_paramteres";
 	
@@ -42,4 +42,5 @@ public interface FilterConstants {
 	static final String ISNUMERIC_TAG  ="is_numeric";
 	static final String ISALPHABET_TAG  ="is_alphabet";
 	static final String ISALPHANUMERIC_TAG  ="is_alphanumeric";
+	static final String ISFILE_TAG = "is_file";
 }
