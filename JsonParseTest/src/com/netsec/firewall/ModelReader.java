@@ -12,14 +12,15 @@ import org.json.simple.parser.ParseException;
 
 public class ModelReader {
 
-	public static HashMap<String, Payload> generateModel() {
+	public static void generateModel() {
 		JSONParser parser = new JSONParser();
 		String input_file_path = WAFParameters.getMODEL_FILE();
 		HashMap<String, Payload> refererurlmap = new HashMap<String, Payload>();
+		int max_number_of_parameters = 0;
 		try {
 			JSONObject obj = (JSONObject) parser.parse(new FileReader(
 					input_file_path));
-			int max_number_of_parameters = Integer.parseInt(obj.get(
+			max_number_of_parameters = Integer.parseInt(obj.get(
 					FilterConstants.MAX_PARAMETERS).toString());
 
 			System.out.println(max_number_of_parameters);
@@ -82,6 +83,8 @@ public class ModelReader {
 				}
 
 			}
+		DataManager.getInstance().setmap(refererurlmap);
+		DataManager.getInstance().setmaxparameters(max_number_of_parameters);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -92,7 +95,7 @@ public class ModelReader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return refererurlmap;
+		//return refererurlmap;
 	}
 
 }

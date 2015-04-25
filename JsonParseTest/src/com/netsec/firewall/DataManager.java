@@ -51,6 +51,15 @@ public class DataManager {
 	   
 	   //Functions
 	   
+	   public void setmap(HashMap<String, Payload> rf)
+	   {
+		   refererurlmap = rf;
+		   
+	   }
+	   public void setmaxparameters(int maxx)
+	   {
+		   maximum_number_of_parameters = maxx;
+	   }
 	   
 	   /*****************************************************************************
 		Function Name:ReadFromJSONObject
