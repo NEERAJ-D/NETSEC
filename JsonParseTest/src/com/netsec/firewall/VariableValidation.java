@@ -16,7 +16,7 @@ public class VariableValidation {
 		min = Integer.MAX_VALUE;
 		standard_deviation = 0.0;
 		dataType = "";
-		standard_deviation = 0;
+		
 	}
 	public VariableValidation(int nmax,int naverage,int nmin,String dttype, double standard_dev) {
 		// TODO Auto-generated constructor stub
