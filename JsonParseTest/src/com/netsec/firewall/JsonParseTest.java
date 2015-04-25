@@ -11,8 +11,8 @@ public class JsonParseTest {
 
 	//TODO Accept these strings from a constants file 
 	//temporary declarations
-	private static final String INPUTFILEPATH = "D:\\Study\\Network Security\\training.log";
-	private static final String OUTPUTFILEPATH = "D:\\Study\\Network Security\\modelfile.json";
+	private static final String INPUTFILEPATH = WAFParameters.getLOG_FILE();
+	private static final String OUTPUTFILEPATH = WAFParameters.getMODEL_FILE();
 	
 	/*****************************************************************************
 	Function Name:StartLearning

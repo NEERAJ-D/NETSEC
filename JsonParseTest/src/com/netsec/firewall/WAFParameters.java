@@ -9,10 +9,10 @@ import java.util.Properties;
 public class WAFParameters implements FileChangeListener {
 	public static Properties CONFIG_FILE_PATHS = new Properties();
 	private static WAFParameters instance;
-	public static String SIGNATURE_FILE;
-	public static String MODEL_FILE;
-	public static String LOG_FILE;
-	public static String propertyHome = System.getenv("CATALINA_HOME");
+	private static String SIGNATURE_FILE;
+	private static String MODEL_FILE;
+	private static String LOG_FILE;
+	private static String propertyHome = System.getenv("CATALINA_HOME");
 
 	protected WAFParameters() throws FileNotFoundException {
 		loadProperties();
