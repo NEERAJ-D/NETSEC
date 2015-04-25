@@ -103,11 +103,14 @@ public class DataManager {
 			Payload temporary;
 			
 			//If valid contents do exist on the page (Added Check since some pages do not have content-length
-			if(content_length != null)
+			if(content_length != null || method.equalsIgnoreCase(FilterConstants.METHOD_GET))
 			{
-
-				Integer contentlength = Integer.parseInt(content_length);
-	
+				Integer contentlength = 0;
+				if(content_length != null)
+					contentlength = Integer.parseInt(content_length);
+				else
+					contentlength = current_parameters.size();
+					
 				//DataManager.getInstance().ValidatePayload(referer,contentlength,parameters);
 			
 			
@@ -223,7 +226,7 @@ public class DataManager {
 	   /*****************************************************************************
 		Function Name:ValidateParameters
 		Function Parameters:Payload Object
-		Function Description:Validate the parameters and store the paramters
+		Function Description:Validate the parameters and store the parameters
 		*****************************************************************************/
 	   private void ValidateParameters(JSONObject parameters,Payload temporary)
 	   {
@@ -274,11 +277,7 @@ public class DataManager {
 								if(IsFile)
 								{
 									temp_instance.IsFile = IsFile;
-									//In case a File type Regex is matched then all the variables are reset to 0
-									temp_instance.validationrules.average = 0;
-									temp_instance.validationrules.max = 0;
-									temp_instance.validationrules.min = 0;
-									temp_instance.validationrules.standard_deviation = 0;
+									
 								}
 								else
 								{
@@ -298,56 +297,63 @@ public class DataManager {
 				 
 				 //List of Valid values (can act as a white list)
 				 //temp_instance.parameterValues.add(variable_value);
-				 
-				 int contentlength = 0;
-				 if(IsNumeric)
+				 if(!IsFile)
 				 {
-					 //Apply validation for min max based on value
-					 contentlength = Integer.parseInt(variable_value);
-					//Check Maximum
-						if(temp_instance.validationrules.max < contentlength)
-							temp_instance.validationrules.max = contentlength;
-							
-						//Check Minimum
-						if(temp_instance.validationrules.min > contentlength)
-							temp_instance.validationrules.min = contentlength;
+					 int contentlength = 0;
+					 if(IsNumeric)
+					 {
+						 //Apply validation for min max based on value
+						 contentlength = Integer.parseInt(variable_value);
+						//Check Maximum
+							if(temp_instance.validationrules.max < contentlength)
+								temp_instance.validationrules.max = contentlength;
+								
+							//Check Minimum
+							if(temp_instance.validationrules.min > contentlength)
+								temp_instance.validationrules.min = contentlength;
+					 }
+					 else
+					 {
+						 //Apply validation based on text-length field
+						 contentlength = variable_value.length();
+						//Check Maximum
+							if(temp_instance.validationrules.max < contentlength)
+								temp_instance.validationrules.max = contentlength;
+								
+							//Check Minimum
+							if(temp_instance.validationrules.min > contentlength)
+								temp_instance.validationrules.min = contentlength;
+					 }
+					
+					//Add the content length to the list for calculation of standard deviation
+					 temp_instance.listofcontentlengths.add(contentlength);
+					 
+					//Update the average
+					temp_instance.validationrules.average = (temp_instance.validationrules.average * temp_instance.numberofinstances + contentlength)/(temp_instance.numberofinstances + 1);
+					temp_instance.numberofinstances++;
+	
+					//Below statements ensure that variable flags indicate the type of regex they satisfy
+					//Any variable if violates the regex even a single time, then would not be checked further
+					//In case an average case or standard deviation needs to be considered then all possible values need to be stored.
+					
+					
+					/*
+					 * NEED NOT ITERATIVELY PERFORM THIS CHECK AS LEARNING ALWAYS INVOLVES CORRRECT INPUT
+					 * UNCOMMENT IF LEARNING DECIDE TO TRAIN ON INCORRECT INPUT ALSO
+					//temp_instance.IsAlphaNumeric has been initialized to true, so first time value is true, and if true only then 
+					//check if next value is true, first time false appears do not check from next time
+	
+					*/
 				 }
 				 else
 				 {
-					 //Apply validation based on text-length field
-					 contentlength = variable_value.length();
-					//Check Maximum
-						if(temp_instance.validationrules.max < contentlength)
-							temp_instance.validationrules.max = contentlength;
-							
-						//Check Minimum
-						if(temp_instance.validationrules.min > contentlength)
-							temp_instance.validationrules.min = contentlength;
+					 //Reset the values in case of File
+					 temp_instance.validationrules.standard_deviation = 0.0;
+					 temp_instance.validationrules.min = 0;
 				 }
-				
-				//Add the content length to the list for calculation of standard deviation
-				 temp_instance.listofcontentlengths.add(contentlength);
-				 
-				//Update the average
-				temp_instance.validationrules.average = (temp_instance.validationrules.average * temp_instance.numberofinstances + contentlength)/(temp_instance.numberofinstances + 1);
-				temp_instance.numberofinstances++;
-
-				//Below statements ensure that variable flags indicate the type of regex they satisfy
-				//Any variable if violates the regex even a single time, then would not be checked further
-				//In case an average case or standard deviation needs to be considered then all possible values need to be stored.
-				
-				
-				/*
-				 * NEED NOT ITERATIVELY PERFORM THIS CHECK AS LEARNING ALWAYS INVOLVES CORRRECT INPUT
-				 * UNCOMMENT IF LEARNING DECIDE TO TRAIN ON INCORRECT INPUT ALSO
-				//temp_instance.IsAlphaNumeric has been initialized to true, so first time value is true, and if true only then 
-				//check if next value is true, first time false appears do not check from next time
-
-				*/
-					
 				//add variables to map (variable_name --> ParameterVariables structure )
 				temporary.variables_data.put(variable_name, temp_instance);
-			
+				 
 			} //Only perform all activities in the Loop if the content length is non-zero
 			
 	   }
