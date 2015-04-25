@@ -293,7 +293,7 @@ public class FileManager {
         file.close();
         
         //Flag that indicates the learning phase completion
-        WAFParameters.getInstance().SetLearning(true);
+        WAFParameters.getInstance().SetLearning(false);
         
 	} catch (FileNotFoundException ex) {
 		ex.printStackTrace();
