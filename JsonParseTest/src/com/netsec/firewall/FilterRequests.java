@@ -28,6 +28,11 @@ public class FilterRequests {
 
 	public static boolean filterRequests(UserRequest request) {
 
+		if(DataManager.getInstance().refererurlmap == null || DataManager.getInstance().refererurlmap.size() == 0)
+		{
+			ModelReader md = new ModelReader();
+			md.generateModel();
+		}
 		boolean sign = signaturefiltering(request.getHeader(),
 				request.getParameters());
 		if (!sign)
@@ -149,64 +154,82 @@ public class FilterRequests {
 			String key = entry.getKey();
 			ParameterVariables value = entry.getValue();
 
-			if (!parameters.containsKey(key)) {
-				logger.log(Level.SEVERE, "Invalid Parameter");
-				return false;
-			}
-			String req_value = parameters.get(key);
-
-			temp = DataManager.getInstance().IsFieldNumeric(req_value);
-
-			if (temp) {
-				number = Integer.parseInt(req_value);
-				if (number > value.validationrules.max) {
-					logger.log(Level.SEVERE, "Value for " + key
-							+ " exceeded the limit");
+			if(!(DataManager.getInstance().IsFieldFile(key)))
+			{
+				if (!parameters.containsKey(key)) {
+					logger.log(Level.SEVERE, "Invalid Parameter");
 					return false;
 				}
-				if (number < value.validationrules.min) {
-					logger.log(Level.SEVERE, "Value for " + key
-							+ " under the limit");
+				String req_value = parameters.get(key);
+				
+				double std_dev = p.variables_data.get(key).validationrules.standard_deviation;
+				int avg = p.variables_data.get(key).validationrules.average;
+				
+				temp = DataManager.getInstance().IsFieldNumeric(req_value);
+	
+				if (temp) {
+					number = Integer.parseInt(req_value);
+					if (number > value.validationrules.max) {
+						logger.log(Level.SEVERE, "Value for " + key
+								+ " exceeded the limit");
+						return false;
+					}
+					if (number < value.validationrules.min) {
+						logger.log(Level.SEVERE, "Value for " + key
+								+ " under the limit");
+						return false;
+					}	
+					if ((avg - std_dev) > number || number > (avg + std_dev)){
+						logger.log(Level.SEVERE, "Value for " + key
+								+ " is out of bound");
+						return false;
+					}
+				
+				} else {
+					number = req_value.length();
+					if (number > value.validationrules.max) {
+						logger.log(Level.SEVERE, "Content length for " + key
+								+ " exceeded the limit");
+						return false;
+					}
+					if (number < value.validationrules.min) {
+						logger.log(Level.SEVERE, "Content length for " + key
+								+ " under the limit");
+						return false;
+					}
+					if ((avg - std_dev) > number || number > (avg + std_dev)){
+						logger.log(Level.SEVERE, "Content Length for " + key
+								+ " is out of bound");
+						return false;
+					}
+					
+				}
+	
+				if (temp != value.IsNumeric) {
+					logger.log(Level.SEVERE,
+							"Type mismatch : Numeric value expected");
 					return false;
 				}
-			} else {
-				number = req_value.length();
-				if (number > value.validationrules.max) {
-					logger.log(Level.SEVERE, "Content length for " + key
-							+ " exceeded the limit");
+	
+				temp = DataManager.getInstance().IsFieldEmailID(req_value);
+				if (temp != value.IsEmailID) {
+					logger.log(Level.SEVERE, "Not an valid Email");
 					return false;
 				}
-				if (number < value.validationrules.min) {
-					logger.log(Level.SEVERE, "Content length for " + key
-							+ " under the limit");
+	
+				temp = DataManager.getInstance().IsFieldAlphaNumeric(req_value);
+				if (temp != value.IsAlphaNumeric) {
+					logger.log(Level.SEVERE,
+							"Type mismatch : Alpha Numeric value expected");
 					return false;
 				}
-			}
-
-			if (temp != value.IsNumeric) {
-				logger.log(Level.SEVERE,
-						"Type mismatch : Numeric value expected");
-				return false;
-			}
-
-			temp = DataManager.getInstance().IsFieldEmailID(req_value);
-			if (temp != value.IsEmailID) {
-				logger.log(Level.SEVERE, "Not an valid Email");
-				return false;
-			}
-
-			temp = DataManager.getInstance().IsFieldAlphaNumeric(req_value);
-			if (temp != value.IsAlphaNumeric) {
-				logger.log(Level.SEVERE,
-						"Type mismatch : Alpha Numeric value expected");
-				return false;
-			}
-
-			temp = DataManager.getInstance().IsFieldAlphabet(req_value);
-			if (temp != value.IsCharacter) {
-				logger.log(Level.SEVERE,
-						"Type mismatch : only Alphabets expected");
-				return false;
+	
+				temp = DataManager.getInstance().IsFieldAlphabet(req_value);
+				if (temp != value.IsCharacter) {
+					logger.log(Level.SEVERE,
+							"Type mismatch : only Alphabets expected");
+					return false;
+				}
 			}
 		}
 		return true;
