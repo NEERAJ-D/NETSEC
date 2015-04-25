@@ -274,6 +274,11 @@ public class DataManager {
 								if(IsFile)
 								{
 									temp_instance.IsFile = IsFile;
+									//In case a File type Regex is matched then all the variables are reset to 0
+									temp_instance.validationrules.average = 0;
+									temp_instance.validationrules.max = 0;
+									temp_instance.validationrules.min = 0;
+									temp_instance.validationrules.standard_deviation = 0;
 								}
 								else
 								{
