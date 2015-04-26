@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -99,16 +101,31 @@ public class FilterRequests {
 				}
 			}
 		} else {
+			Pattern pattern_fp = Pattern.compile(FilterConstants.regex_file_path);
 			if (str[2].equals("*")) {
 				// iterate all of parameter and check str[3]
-
+				
 				for (Map.Entry<String, String> entry : parameters.entrySet()) {
-					String value = entry.getValue();
-					if (value.contains(str[3]))
+				String value = entry.getValue();
+				if(value.equals(FilterConstants.regex_file_path)){
+					Matcher m = pattern_fp.matcher(value);
+				    if (m.find())
+				    {
+				    	return false;
+				    }
+				}
+				else if (value.contains(str[3]))
 						return false;
 				}
 			} else {
 				if (parameters.get(str[2]) != null) {
+					if(str[3].equals(FilterConstants.regex_file_path)){
+						Matcher m = pattern_fp.matcher(parameters.get(str[2]));
+					    if (m.find())
+					    {
+					    	return false;
+					    }
+					}
 					if (parameters.get(str[2]).contains(str[3]))
 						return false;
 				}

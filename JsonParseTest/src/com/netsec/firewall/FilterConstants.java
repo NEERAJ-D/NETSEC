@@ -12,6 +12,8 @@ public interface FilterConstants {
 	static final String regex_alphabet = ".*[a-zA-Z].*";
 	//static final String regex_alphabet = "[a-zA-Z]+";
 	static final String regex_file = "\\Aimage/(.)*"; //Only Image Files are acceptable
+	static final String regex_file_path = "((?:\\.\\.\\/)+)";
+	static final String FILE_PATH = "filePath";
 	
 	//Constants for File reading 
 	static final String REQUESTS = "requests";
