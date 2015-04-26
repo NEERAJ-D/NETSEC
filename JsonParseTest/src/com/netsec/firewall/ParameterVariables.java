@@ -23,7 +23,7 @@ public class ParameterVariables {
 	//Boolean Variables that store the regular expression rules
 	boolean IsEmailID;
 	boolean IsNumeric;
-	boolean IsAlphaNumeric;
+	//boolean IsAlphaNumeric;
 	boolean IsCharacter;
 	boolean IsFile;
 	ParameterVariables()

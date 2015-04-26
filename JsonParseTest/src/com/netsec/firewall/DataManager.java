@@ -179,7 +179,7 @@ public class DataManager {
 	   /*****************************************************************************
 		Function Name:IsFieldNumeric
 		Function Parameters:variable_value
-		Function Description:Check if the variable value is numeric
+		Function Description:Check if at least one digit occurs in the variable
 		*****************************************************************************/
 	   public boolean IsFieldNumeric(String variable_value)
 	   {
@@ -194,14 +194,14 @@ public class DataManager {
 		Function Parameters:variable_value
 		Function Description:Check if the variable value is alpha numeric
 		*****************************************************************************/
-	   public boolean IsFieldAlphaNumeric(String variable_value)
+	   /*public boolean IsFieldAlphaNumeric(String variable_value)
 	   {
 		   Pattern pattern_alphanumeric = Pattern.compile(FilterConstants.regex_alphanumeric);
 			 //Check if regex digit field
 			 boolean IsAlphanumeric  ;//= need to extract IsAlphanumeric variable from stored;
 			 IsAlphanumeric =  (pattern_alphanumeric.matcher(variable_value).matches() ? true : false);
 			 return IsAlphanumeric;
-	   }
+	   }*/
 	   /*****************************************************************************
 		Function Name:IsFieldAlphabet
 		Function Parameters:variable_value
@@ -228,6 +228,22 @@ public class DataManager {
 			 IsFile =  (pattern_alphabet.matcher(variable_value).matches() ? true : false);
 			 return IsFile;
 	   }
+
+	   /*****************************************************************************
+		Function Name:IsFieldEntireNumeric
+		Function Parameters:variable_value
+		Function Description:Check if the variable value is a number
+		*****************************************************************************/
+	   public boolean IsFieldEntireNumeric(String variable_value)
+	   {
+			 Pattern pattern_alphabet = Pattern.compile(FilterConstants.regex_entire_number);
+			 //Check if regex is entirely a digit field
+			 boolean IsNumber ;
+			 IsNumber =  (pattern_alphabet.matcher(variable_value).matches() ? true : false);
+			 return IsNumber;
+	   }
+
+	   
 	   /*****************************************************************************
 		Function Name:ValidateParameters
 		Function Parameters:Payload Object
@@ -251,7 +267,7 @@ public class DataManager {
 				 boolean IsNumeric = IsFieldNumeric(variable_value);
 				 
 				//Check if the field is alphanumeric 
-				 boolean IsAlphanumeric = IsFieldAlphaNumeric(variable_value);
+				 //boolean IsAlphanumeric = IsFieldAlphaNumeric(variable_value);
 				 
 				//Check if the field is alphabet
 				boolean IsAlphabet = IsFieldAlphabet(variable_value) ;
@@ -267,45 +283,39 @@ public class DataManager {
 				 else
 				 {
 					 temp_instance = new ParameterVariables();
-					 if(IsEmailid)
-						{
-							temp_instance.IsEmailID = IsEmailid;
-						}
-						else
-						{
-							if(IsNumeric)
-							{
-								temp_instance.IsNumeric = IsNumeric;
-							}
-							else
-							{
-								if(IsFile)
-								{
-									temp_instance.IsFile = IsFile;
-									
-								}
-								else
-								{
-									if(IsAlphabet)
-									{
-										temp_instance.IsCharacter = IsAlphabet;
-									}
-									else if(IsAlphanumeric)
-									{
-										temp_instance.IsAlphaNumeric = IsAlphanumeric;
-									}
-								}
-							}
-						}
-					 
+				 }
+				if(IsEmailid)
+				{
+						temp_instance.IsEmailID = IsEmailid;
 				}
+				else if(IsFile)
+				{
+					temp_instance.IsFile = IsFile;
+				}else
+				{
+					if(IsNumeric)
+					{
+						temp_instance.IsNumeric = IsNumeric;
+					}
+					if(IsAlphabet)
+					{
+						temp_instance.IsCharacter = IsAlphabet;
+					}
+					/*else if(IsAlphanumeric)
+					{
+						temp_instance.IsAlphaNumeric = IsAlphanumeric;
+					}*/
+				}
+					 
+				//Check if the Entire Field is numeric
+				boolean IsEntireNumeric = IsFieldEntireNumeric(variable_value);
 				 
 				 //List of Valid values (can act as a white list)
 				 //temp_instance.parameterValues.add(variable_value);
 				 if(!IsFile)
 				 {
 					 int contentlength = 0;
-					 if(IsNumeric)
+					 if(IsEntireNumeric)
 					 {
 						 //Apply validation for min max based on value
 						 contentlength = Integer.parseInt(variable_value);

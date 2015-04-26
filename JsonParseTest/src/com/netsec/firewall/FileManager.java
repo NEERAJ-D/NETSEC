@@ -17,8 +17,6 @@ import org.json.simple.parser.ParseException;
 
 public class FileManager {
 	
-
-	
 	//File Operations Objects
 	private static FileReader file_learning_input;
 	private static BufferedReader file_buffered_reader;
@@ -64,7 +62,7 @@ public class FileManager {
 				
 					logger.debug("Payload validated");
 					//Separator print #DEBUG
-					System.out.println("-------------------");
+					
 				}
 			}
 		
@@ -103,18 +101,21 @@ public class FileManager {
     			
     			totalnumberofvariablevalues = singlepage_paramter_value.getValue().listofcontentlengths.size();
     			
-    			for( Integer singlelement : singlepage_paramter_value.getValue().listofcontentlengths)
+    			if(false == singlepage_paramter_value.getValue().IsFile)
     			{
-    				   				
-    				//Calculate abs(individual - mean)
-    				standard_deviation = standard_deviation + Math.pow(singlelement - singlepage_paramter_value.getValue().validationrules.average  , 2);
-    				
+    				standard_deviation = 0;
+	    			for( Integer singlelement : singlepage_paramter_value.getValue().listofcontentlengths)
+	    			{
+	    				   				
+	    				//Calculate abs(individual - mean)
+	    				standard_deviation = standard_deviation + Math.pow(singlelement - singlepage_paramter_value.getValue().validationrules.average  , 2);
+	    				
+	    			}
+	    			double sd = Math.sqrt(standard_deviation/(totalnumberofvariablevalues));
+	    			
+	    			//Need to write the standard deviation sd to the file
+	    	    	singlepage_paramter_value.getValue().validationrules.standard_deviation = sd;
     			}
-    			double sd = Math.sqrt(standard_deviation/(totalnumberofvariablevalues));
-    			
-    			//Need to write the standard deviation sd to the file
-    	    	singlepage_paramter_value.getValue().validationrules.standard_deviation = sd;
-    	 
     	    	
     		}
     		//Find the maximum number of parameters all pages
@@ -205,7 +206,7 @@ public class FileManager {
        	ObjHeaderInfo.put(FilterConstants.MAXIMUM_TAG, header_info.validation_variable.max);
 		ObjHeaderInfo.put(FilterConstants.MINIMUM_TAG, header_info.validation_variable.min);
 		ObjHeaderInfo.put(FilterConstants.AVERAGE_TAG, header_info.validation_variable.average);
-		ObjHeaderInfo.put(FilterConstants.TOTAL_PARAMETERS_TAG, header_info.totalrequests);
+		ObjHeaderInfo.put(FilterConstants.TOTAL_PARAMETERS_TAG, header_info.total_number_of_variables);
 		ObjHeaderInfo.put(FilterConstants.METHOD_TAG, header_info.method);
 	}
 	
@@ -238,7 +239,7 @@ public class FileManager {
     		//Write boolean values
     		ParameterData.put(FilterConstants.ISEMAILID_TAG, parameter_value.IsEmailID );
     		ParameterData.put(FilterConstants.ISNUMERIC_TAG, parameter_value.IsNumeric );
-    		ParameterData.put(FilterConstants.ISALPHANUMERIC_TAG, parameter_value.IsEmailID );
+    		//ParameterData.put(FilterConstants.ISALPHANUMERIC_TAG, parameter_value.IsAlphaNumeric);
     		ParameterData.put(FilterConstants.ISALPHABET_TAG, parameter_value.IsCharacter );
     		ParameterData.put(FilterConstants.ISFILE_TAG, parameter_value.IsFile );
         	ParameterInfo.put(parameter_name,ParameterData );
