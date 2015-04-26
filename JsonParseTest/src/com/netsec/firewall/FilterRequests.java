@@ -18,7 +18,7 @@ public class FilterRequests {
 	public static List<String> properties = new ArrayList<String>();
 
 	public static void learnsignatures() {
-
+		//Reads the signatures from signature file and store in list
 		try {
 			File file = new File(WAFParameters.getSIGNATURE_FILE());
 			FileReader fileReader = new FileReader(file);
@@ -35,16 +35,20 @@ public class FilterRequests {
 
 	public static boolean filterRequests(UserRequest request) {
 
+		// Request received for filtering
 		if (DataManager.getInstance().refererurlmap == null
 				|| DataManager.getInstance().refererurlmap.size() == 0) {
+			//If no learning data present read it from model file
 			ModelReader md = new ModelReader();
 			md.generateModel();
 		}
+		//Signature filtering 
 		boolean sign = signaturefiltering(request.getHeader(),
 				request.getParameters());
 		if (!sign)
 			return false;
 		else {
+			//Profile filtering
 			boolean profile = profilefiltering(request.getHeader(),
 					request.getParameters());
 			if (!profile)
@@ -55,12 +59,13 @@ public class FilterRequests {
 
 	private static boolean signaturefiltering(Map<String, String> header,
 			Map<String, String> parameters) {
+		//check if signatures are loaded otherwise read it from file
 		if (properties.size() == 0) {
 			learnsignatures();
 		}
 		for (String property : properties) {
 			String[] str = property.split(",");
-
+			//For each signature check with the received request
 			if (str[0].equals("")) {
 				boolean checkresult = checksigunature(header, parameters, str);
 				if (checkresult == false) {
@@ -88,13 +93,14 @@ public class FilterRequests {
 
 		if (str[1].equals(FilterConstants.HEADER_TAG)) {
 			if (str[2].equals("*")) {
-				// iterate all of header and check str[3]
+				// checks the signature for all the fields in header
 				for (Map.Entry<String, String> entry : header.entrySet()) {
 					String value = entry.getValue();
 					if (value.contains(str[3]))
 						return false;
 				}
 			} else {
+				//check signature for specified field in header
 				if (header.get(str[2]) != null) {
 					if (header.get(str[2]).contains(str[3]))
 						return false;
@@ -103,8 +109,8 @@ public class FilterRequests {
 		} else {
 			Pattern pattern_fp = Pattern.compile(FilterConstants.regex_file_path);
 			if (str[2].equals("*")) {
-				// iterate all of parameter and check str[3]
-				
+				// checks the signature for all the fields in parameter
+
 				for (Map.Entry<String, String> entry : parameters.entrySet()) {
 				String value = entry.getValue();
 				if(value.equals(FilterConstants.regex_file_path)){
@@ -118,6 +124,7 @@ public class FilterRequests {
 						return false;
 				}
 			} else {
+				//check signature for specified field in parameter
 				if (parameters.get(str[2]) != null) {
 					if(str[3].equals(FilterConstants.regex_file_path)){
 						Matcher m = pattern_fp.matcher(parameters.get(str[2]));
@@ -167,7 +174,7 @@ public class FilterRequests {
 
 	public static boolean filterParameters(Map<String, String> parameters,
 			Map<String, String> header) {
-
+		//Filtering parameters 
 		int number;
 		boolean temp = false;
 		String url = header.get(FilterConstants.REFERER);
@@ -175,13 +182,14 @@ public class FilterRequests {
 		logger.warn("Payload  : " + DataManager.getInstance().refererurlmap);
 		if (p != null) {
 			if (parameters.size() != p.variables_data.size()) {
+				//check if number of parameters in request and in model are equal
 				logger.warn("Incorrect number of Parameters");
 				return false;
 			}
 
 			for (Map.Entry<String, ParameterVariables> entry : p.variables_data
 					.entrySet()) {
-
+				//For each parameter in model compare the values 
 				String key = entry.getKey();
 				ParameterVariables value = entry.getValue();
 				if (!parameters.containsKey(key)) {
@@ -189,6 +197,7 @@ public class FilterRequests {
 					return false;
 				}
 				String req_value = parameters.get(key);
+				//check if parameter is of file type
 				if (value.IsFile) {
 					if (!DataManager.getInstance().IsFieldFile(req_value)) {
 						logger.warn("Invalid File type : " + req_value);
