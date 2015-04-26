@@ -36,8 +36,6 @@ public class ModelReader {
 			max_number_of_parameters = Integer.parseInt(obj.get(
 					FilterConstants.MAX_PARAMETERS).toString());
 
-			//System.out.println(max_number_of_parameters);
-
 			JSONArray jsonArrayOfRequest = (JSONArray) obj.get(FilterConstants.REQUESTS);
 			for (int i = 0; i < jsonArrayOfRequest.size(); i++) {
 				JSONObject obj2 = (JSONObject) jsonArrayOfRequest.get(i);
@@ -125,7 +123,6 @@ public class ModelReader {
 			e.printStackTrace();
 			logger.error("",e);
 		}
-		//return refererurlmap;
 	}
 
 //}//end main
