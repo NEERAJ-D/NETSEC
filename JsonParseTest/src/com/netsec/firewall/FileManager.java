@@ -67,6 +67,7 @@ public class FileManager {
 			}
 		
 		
+
 		//Standard deviation calculation
 		PostProcessing();
 		
@@ -308,7 +309,7 @@ public class FileManager {
         file.close();
         
         //Flag that indicates the learning phase completion
-        WAFParameters.getInstance().setLearning(false);
+        //WAFParameters.getInstance().setLearning(false);
         
         
         

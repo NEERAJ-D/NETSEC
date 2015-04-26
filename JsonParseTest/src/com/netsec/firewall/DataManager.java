@@ -11,14 +11,6 @@ Class Name:DataManager
 Class Description:Singleton data store
 *****************************************************************************/
 public class DataManager {
-	//boolean ispagevalid;
-	
-	/*
-	public boolean IsPageValid()
-	{
-		return ispagevalid;
-	}
-	*/
 	
 	int maximum_number_of_parameters;
 	
@@ -117,8 +109,6 @@ public class DataManager {
 					contentlength = current_parameters.size();
 					
 				//DataManager.getInstance().ValidatePayload(referer,contentlength,parameters);
-			
-			
 					if(refererurlmap.get(referer)!=null)
 					{
 						//Fetch the ParameterData for corresponding page
@@ -189,20 +179,7 @@ public class DataManager {
 			 IsNumeric =  (pattern_digit.matcher(variable_value).matches() ? true : false);
 			 return  IsNumeric;
 	   }
-	   /*****************************************************************************
-		Function Name:IsFieldAlphaNumeric
-		Function Parameters:variable_value
-		Function Description:Check if the variable value is alpha numeric
-		*****************************************************************************/
-	   /*public boolean IsFieldAlphaNumeric(String variable_value)
-	   {
-		   Pattern pattern_alphanumeric = Pattern.compile(FilterConstants.regex_alphanumeric);
-			 //Check if regex digit field
-			 boolean IsAlphanumeric  ;//= need to extract IsAlphanumeric variable from stored;
-			 IsAlphanumeric =  (pattern_alphanumeric.matcher(variable_value).matches() ? true : false);
-			 return IsAlphanumeric;
-	   }*/
-	   /*****************************************************************************
+	    /*****************************************************************************
 		Function Name:IsFieldAlphabet
 		Function Parameters:variable_value
 		Function Description:Check if the variable value is character
@@ -254,9 +231,7 @@ public class DataManager {
 		   logger.info("Validating Parameters");
 		 //Read the variable names
 			for ( Object key : parameters.keySet() ) { 
-				 //System.out.println( key.toString() );
-				
-				 
+				  
 				 String variable_name = (String)key.toString();
 				 String variable_value = (String)parameters.get(variable_name);
 				 					 
@@ -265,9 +240,6 @@ public class DataManager {
 				 	
 				 //Check if the field is numeric
 				 boolean IsNumeric = IsFieldNumeric(variable_value);
-				 
-				//Check if the field is alphanumeric 
-				 //boolean IsAlphanumeric = IsFieldAlphaNumeric(variable_value);
 				 
 				//Check if the field is alphabet
 				boolean IsAlphabet = IsFieldAlphabet(variable_value) ;
@@ -301,10 +273,6 @@ public class DataManager {
 					{
 						temp_instance.IsCharacter = IsAlphabet;
 					}
-					/*else if(IsAlphanumeric)
-					{
-						temp_instance.IsAlphaNumeric = IsAlphanumeric;
-					}*/
 				}
 					 
 				//Check if the Entire Field is numeric
@@ -347,24 +315,14 @@ public class DataManager {
 					temp_instance.validationrules.average = (temp_instance.validationrules.average * temp_instance.numberofinstances + contentlength)/(temp_instance.numberofinstances + 1);
 					temp_instance.numberofinstances++;
 	
-					//Below statements ensure that variable flags indicate the type of regex they satisfy
-					//Any variable if violates the regex even a single time, then would not be checked further
-					//In case an average case or standard deviation needs to be considered then all possible values need to be stored.
-					
-					
-					/*
-					 * NEED NOT ITERATIVELY PERFORM THIS CHECK AS LEARNING ALWAYS INVOLVES CORRRECT INPUT
-					 * UNCOMMENT IF LEARNING DECIDE TO TRAIN ON INCORRECT INPUT ALSO
-					//temp_instance.IsAlphaNumeric has been initialized to true, so first time value is true, and if true only then 
-					//check if next value is true, first time false appears do not check from next time
-	
-					*/
 				 }
 				 else
 				 {
 					 //Reset the values in case of File
 					 temp_instance.validationrules.standard_deviation = 0.0;
 					 temp_instance.validationrules.min = 0;
+					 temp_instance.validationrules.max = 0;
+					 temp_instance.validationrules.average = 0;
 				 }
 				//add variables to map (variable_name --> ParameterVariables structure )
 				temporary.variables_data.put(variable_name, temp_instance);
