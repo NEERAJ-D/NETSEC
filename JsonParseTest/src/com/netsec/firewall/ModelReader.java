@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.logging.Level;
+
 //import java.util.logging.Logger;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -67,8 +67,6 @@ public class ModelReader {
 								.get(FilterConstants.ISEMAILID_TAG);
 						PV.IsNumeric = (boolean) param_details
 								.get(FilterConstants.ISNUMERIC_TAG);
-						PV.IsAlphaNumeric = (boolean) param_details
-								.get(FilterConstants.ISALPHANUMERIC_TAG);
 						PV.IsCharacter = (boolean) param_details
 								.get(FilterConstants.ISALPHABET_TAG);
 						PV.validationrules.average = Integer
