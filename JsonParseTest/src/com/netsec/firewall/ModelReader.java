@@ -12,14 +12,21 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
 public class ModelReader {
+
 	private static final Logger logger = Logger.getLogger("NETSEC");
+	//public static void main(String[] args)
+	//{
+
+	
 	
 	public static void generateModel() {
 		JSONParser parser = new JSONParser();
-		String input_file_path = WAFParameters.getMODEL_FILE();
+		String input_file_path = WAFParameters.getMODEL_FILE();//"modelfile.json";
 		HashMap<String, Payload> refererurlmap = new HashMap<String, Payload>();
 		int max_number_of_parameters = 0;
+		Payload p;
 		//logger.log(Level.WARNING, "Parameters  : " + parameters.toString());
 		logger.warn("ModelReader starting to read model");
 		
@@ -29,7 +36,7 @@ public class ModelReader {
 			max_number_of_parameters = Integer.parseInt(obj.get(
 					FilterConstants.MAX_PARAMETERS).toString());
 
-			System.out.println(max_number_of_parameters);
+			//System.out.println(max_number_of_parameters);
 
 			JSONArray jsonArrayOfRequest = (JSONArray) obj.get(FilterConstants.REQUESTS);
 			for (int i = 0; i < jsonArrayOfRequest.size(); i++) {
@@ -39,7 +46,7 @@ public class ModelReader {
 					JSONArray parameters = (JSONArray) payload
 							.get(FilterConstants.PARAMETERS);
 					JSONObject header = (JSONObject) payload.get(FilterConstants.HEADER);
-					Payload p = new Payload();
+					p = new Payload();
 					p.header_data.validation_variable.max = Integer
 							.parseInt(header.get(FilterConstants.MAXIMUM_TAG).toString());// fill
 					p.header_data.validation_variable.average = Integer
@@ -85,10 +92,23 @@ public class ModelReader {
 					}
 					refererurlmap.put(key.toString(), p);
 				}
-
 			}
 		DataManager.getInstance().setmap(refererurlmap);
 		DataManager.getInstance().setmaxparameters(max_number_of_parameters);
+		//::test code
+		/*
+		System.out.println(DataManager.getInstance().maximum_number_of_parameters);
+		
+		System.out.println(DataManager.getInstance().refererurlmap.size());
+		for (Object key : DataManager.getInstance().refererurlmap.keySet())
+		{
+			System.out.println(key.toString());
+			System.out.println(DataManager.getInstance().refererurlmap.get(key.toString()).variables_data);
+		
+			
+		}
+		*/
+		
 		logger.warn("ModelReader finished reading the model.");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -108,4 +128,5 @@ public class ModelReader {
 		//return refererurlmap;
 	}
 
+//}//end main
 }
