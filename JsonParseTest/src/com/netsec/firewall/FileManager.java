@@ -234,7 +234,7 @@ public class FileManager {
     		//Iterate all the parameters
     		ParameterData.put(FilterConstants.MAXIMUM_TAG, parameter_value.validationrules.max );
     		ParameterData.put(FilterConstants.MINIMUM_TAG, parameter_value.validationrules.min);
-    		ParameterData.put(FilterConstants.AVERAGE_TAG,parameter_value.validationrules.average );
+    		ParameterData.put(FilterConstants.AVERAGE_TAG,(int)parameter_value.validationrules.average);
     		ParameterData.put(FilterConstants.STANDARD_DEVIATION_TAG, parameter_value.validationrules.standard_deviation);
         	
     		//Write boolean values

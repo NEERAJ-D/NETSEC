@@ -5,7 +5,7 @@ Class Description:Class responsible for validation of variables having min,max,a
 *****************************************************************************/
 public class VariableValidation {
 	public int max;
-	public int average;
+	public double average;
 	public int min;
 	public double standard_deviation;
 	String dataType;

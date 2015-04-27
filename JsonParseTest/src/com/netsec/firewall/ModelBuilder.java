@@ -6,18 +6,17 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 /*****************************************************************************
-Class Name:JsonParseTest
+Class Name:ModelBuilder
 Class Description:Wrapper Class responsible for invoking all functionality
 *****************************************************************************/
 public class ModelBuilder {
 
-	//TODO Accept these strings from a constants file 
-	//temporary declarations
+	//File Declarations
 	private static final String INPUTFILEPATH = WAFParameters.getLOG_FILE();
 	private static final String OUTPUTFILEPATH = WAFParameters.getMODEL_FILE();
 	
 	private static final Logger logger = Logger.getLogger("NETSEC");
-	
+		
 	/*****************************************************************************
 	Function Name:StartLearning
 	Function Parameters:
@@ -32,8 +31,6 @@ public class ModelBuilder {
 			String inputfile = INPUTFILEPATH;
 			//Read the Output file String constant from properties file constant
 			String outputfile = OUTPUTFILEPATH;
-			
-			
 			
 			logger.debug("Starting learning process...");
 			

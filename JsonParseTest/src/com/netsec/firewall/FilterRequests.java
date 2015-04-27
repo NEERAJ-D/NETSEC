@@ -207,7 +207,7 @@ public class FilterRequests {
 				} else {
 
 					double std_dev = p.variables_data.get(key).validationrules.standard_deviation;
-					int avg = p.variables_data.get(key).validationrules.average;
+					int avg = (int)p.variables_data.get(key).validationrules.average;
 					temp = DataManager.getInstance().IsFieldEmailID(req_value);
 					if (temp != value.IsEmailID) {
 						logger.warn("Not an valid Email");
@@ -250,8 +250,8 @@ public class FilterRequests {
 							logger.warn("Value for " + key + " under the limit");
 							return false;
 						}
-						if ((avg - std_dev) > number
-								|| number > (avg + std_dev)) {
+						if ((avg -  (3 * std_dev)) > number
+								|| number > (avg + (3 *std_dev))) {
 							logger.warn("Value for " + key + " is out of bound");
 							return false;
 						}
