@@ -6,7 +6,11 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Timer;
 import java.util.TimerTask;
-
+/**
+ * Monitors for changes in the config file
+ * @author nikhil
+ *
+ */
 public class FileMonitor {
 
 	private static final FileMonitor instance = new FileMonitor();

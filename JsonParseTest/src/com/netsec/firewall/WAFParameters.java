@@ -5,7 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
-
+/**
+ * Reads config file and updates variable. This is a Singleton Class.
+ * @author nikhil
+ * @
+ *
+ */
 public class WAFParameters implements FileChangeListener {
 	public static Properties CONFIG_FILE_PATHS = new Properties();
 	private static WAFParameters instance;

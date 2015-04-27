@@ -107,13 +107,13 @@ public class FilterRequests {
 				}
 			}
 		} else {
-			Pattern pattern_fp = Pattern.compile(FilterConstants.regex_file_path);
+			Pattern pattern_fp = Pattern.compile(FilterConstants.regex_file_path, Pattern.CASE_INSENSITIVE| Pattern.DOTALL);
 			if (str[2].equals("*")) {
 				// checks the signature for all the fields in parameter
 
 				for (Map.Entry<String, String> entry : parameters.entrySet()) {
 				String value = entry.getValue();
-				if(value.equals(FilterConstants.regex_file_path)){
+				if(str[3].equals(FilterConstants.FILE_PATH)){
 					Matcher m = pattern_fp.matcher(value);
 				    if (m.find())
 				    {
@@ -126,14 +126,15 @@ public class FilterRequests {
 			} else {
 				//check signature for specified field in parameter
 				if (parameters.get(str[2]) != null) {
-					if(str[3].equals(FilterConstants.regex_file_path)){
+					if(str[3].equals(FilterConstants.FILE_PATH)){
+						logger.warn("Inside regex path");
 						Matcher m = pattern_fp.matcher(parameters.get(str[2]));
 					    if (m.find())
 					    {
 					    	return false;
 					    }
 					}
-					if (parameters.get(str[2]).contains(str[3]))
+					else if (parameters.get(str[2]).contains(str[3]))
 						return false;
 				}
 			}

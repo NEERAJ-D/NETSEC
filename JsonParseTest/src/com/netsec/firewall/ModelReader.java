@@ -16,10 +16,6 @@ import org.json.simple.parser.ParseException;
 public class ModelReader {
 
 	private static final Logger logger = Logger.getLogger("NETSEC");
-	//public static void main(String[] args)
-	//{
-
-	
 	
 	public static void generateModel() {
 		JSONParser parser = new JSONParser();
