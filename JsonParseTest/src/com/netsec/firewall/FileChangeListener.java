@@ -1,7 +1,7 @@
 package com.netsec.firewall;
 
 /**
- * Interface called after every 5000 milli-seconds
+ * Interface called after every 1000 milli-seconds
  * @author nikhil
  *
  */

@@ -28,7 +28,7 @@ public class WAFParameters implements FileChangeListener {
 		FileMonitor.getInstance().addFileChangeListener(
 				this,
 				propertyHome + File.separatorChar
-						+ "properties/files.properties", 5000);
+						+ "properties/files.properties", 1000);
 	}
 
 	public static String getSIGNATURE_FILE() {
