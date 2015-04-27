@@ -9,7 +9,7 @@ import org.json.simple.parser.ParseException;
 Class Name:JsonParseTest
 Class Description:Wrapper Class responsible for invoking all functionality
 *****************************************************************************/
-public class JsonParseTest {
+public class ModelBuilder {
 
 	//TODO Accept these strings from a constants file 
 	//temporary declarations
